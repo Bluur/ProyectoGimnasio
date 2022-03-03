@@ -47,8 +47,8 @@ public abstract class Persona implements Comparable<Persona> {
         this.provincia = provincia;
         this.codigoPostal = codigoPostal;
         this.telefono = telefono;
-        this.fechaAlta = fechaAlta;
-        this.fechaNacimiento = fechaNacimiento;
+        this.fechaAlta = new GregorianCalendar(fechaAlta.get(Calendar.YEAR), fechaAlta.get(Calendar.MONTH), fechaAlta.get(Calendar.DAY_OF_WEEK));
+        this.fechaNacimiento = new GregorianCalendar(fechaNacimiento.get(Calendar.YEAR), fechaNacimiento.get(Calendar.MONTH), fechaNacimiento .get(Calendar.DAY_OF_WEEK));
         this.sexo = sexo;
     }
 
