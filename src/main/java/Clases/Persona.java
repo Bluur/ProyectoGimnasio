@@ -180,6 +180,7 @@ public abstract class Persona implements Comparable<Persona> {
         return Objects.hash(nombre, DNI, direccion, localidad, provincia, codigoPostal, telefono, fechaAlta, fechaNacimiento, sexo);
     }
 
+    @Override
     public int compareTo(Persona o){
         final int edad;
         if(getEdad() == o.getEdad()){
