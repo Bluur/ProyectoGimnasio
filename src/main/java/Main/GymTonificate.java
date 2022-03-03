@@ -2,6 +2,12 @@
 package Main;
 
 
+import Clases.Empleado;
+import Clases.Persona;
+import Funciones.leerDatosTeclado;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class GymTonificate {
 
@@ -24,9 +30,15 @@ public class GymTonificate {
                 case 8 -> System.out.println("8.- Salir del programa");
             }
         }
-        
+
+        Calendar fechaNacimiento = new GregorianCalendar(1999, Calendar.AUGUST, 1999);
+        Calendar calendario = new GregorianCalendar();
+
+        Persona prueba = new Empleado("miguel", "77446461X", "direccion", "localidad", "provincia", "18006", "604101255", calendario, fechaNacimiento, 'H');
+
         eleccion = leerDatosTeclado.LeerEntero("¿Qué desea hacer?", 1, 8);
-        
+
+
         return eleccion;
     }
 }
