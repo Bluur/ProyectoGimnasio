@@ -14,11 +14,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 
 public class PersonaTest {
-    Persona miguel;
-    Persona prueba;
-    GregorianCalendar calendario;
-    GregorianCalendar fechaNacimiento;
-    GregorianCalendar fail;
+
     
     public PersonaTest() {
     }
@@ -33,10 +29,7 @@ public class PersonaTest {
     
     @BeforeEach
     public void setUp() {
-        calendario = new GregorianCalendar();
-        fechaNacimiento = new GregorianCalendar(1999, Calendar.AUGUST, 17);
-        fail = new GregorianCalendar(1922, Calendar.AUGUST, 17);
-        prueba = new Empleado("miguel", "77446461X", "direccion", "localidad", "provincia", "18006", "604101255", calendario, fechaNacimiento, 'H');
+
     }
     
     @AfterEach
@@ -56,7 +49,6 @@ public class PersonaTest {
     })
     public void testConstructor(String nombre, String DNI, String direccion, String localidad, String provincia, String codigoPostal, String telefono, char sexo, String expRes){
         Exception excepcion = assertThrows(IllegalArgumentException.class, () ->{
-            Persona miguel = new Empleado(nombre, DNI, direccion, localidad, provincia, codigoPostal, telefono, calendario, fechaNacimiento, sexo);
         });
         
         assertEquals(expRes, excepcion.getMessage());
@@ -69,7 +61,6 @@ public class PersonaTest {
     })
     public void testConstructorFecha(String nombre, String DNI, String direccion, String localidad, String provincia, String codigoPostal, String telefono, char sexo, String expRes){
         Exception excepcion = assertThrows(IllegalArgumentException.class, () ->{
-            miguel = new Empleado(nombre, DNI, direccion, localidad, provincia, codigoPostal, telefono, calendario, fail, sexo);
         });
         
         assertEquals(expRes, excepcion.getMessage());
@@ -77,8 +68,7 @@ public class PersonaTest {
 
     @Test
     public void testGetEdad(){
-        int edad = prueba.getEdad();
-        assertTrue(edad == 23);
+
     }
     
 }

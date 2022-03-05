@@ -130,7 +130,8 @@ public abstract class Persona implements Comparable<Persona> {
     }
 
     public void setFechaNacimiento(Calendar fechaEntrada) {
-        if(Calendar.YEAR - getEdad() > 99){
+        Calendar actualYear = new GregorianCalendar();
+        if(actualYear.get(Calendar.YEAR) - fechaEntrada.get(Calendar.YEAR) > 99){
             throw new IllegalArgumentException("La edad no puede ser mayor que 99");
         }
         this.fechaNacimiento = fechaEntrada;

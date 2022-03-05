@@ -30,7 +30,7 @@ public class leerDatosTeclado {
         return numero;
     }
 
-    public static int LeerEntero(String mensaje, int minimo, int maximo) {
+    public static int leerEntero(String mensaje, int minimo, int maximo) {
         int numero;
         Scanner input = new Scanner(System.in);
         System.out.println(mensaje);
@@ -41,7 +41,6 @@ public class leerDatosTeclado {
             }
             numero = input.nextInt();
         } while (numero > maximo || numero < minimo);
-
         return numero;
     }
 
@@ -127,5 +126,17 @@ public class leerDatosTeclado {
         recu = input.nextLine();
 
         return recu;
+    }
+
+    public static char leerChar(String mensaje, char condicion1, char condicion2){
+        Scanner input = new Scanner(System.in);
+        char letra;
+
+        System.out.println(mensaje);
+        do{
+            letra = input.next().charAt(0);
+        }while(letra != condicion1 && letra != condicion2);
+
+        return letra;
     }
 }
