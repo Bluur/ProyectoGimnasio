@@ -45,7 +45,7 @@ public class Socio extends Persona {
         this.cuota = sesionesSemanales * 8;
     }
 
-    public boolean getPagado() {
+    public boolean isPagado() {
         return pagado;
     }
 

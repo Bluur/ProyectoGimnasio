@@ -318,7 +318,7 @@ public class GymTonificate {
                 ((Socio) personas.get(posicion)).setSesionesSemanales(sesiones);
             }
             //Pagado
-            if(!((Socio) personas.get(posicion)).getPagado()){
+            if(!((Socio) personas.get(posicion)).isPagado()){
                 eleccion = leerDatosTeclado.leerString("¿No ha pagado sus cuotas, desea pagarlas? (S/N)");
                 if(!eleccion.isEmpty() && eleccion.charAt(0) == 'S'){
                     ((Socio) personas.get(posicion)).setPagado(true);
@@ -353,10 +353,16 @@ public class GymTonificate {
                 }
             }
             //Activo
-            System.out.println("Activo => ");
+            System.out.println("Activo => " +((Monitor) personas.get(posicion)).isActivo());
+            eleccion = leerDatosTeclado.leerString("¿Quiere cambiar su estado actual?" +
+                    "Pulse enter para continuar o introduzca cualquier carácter para cambiarlo");
+            if(!eleccion.isEmpty()){
+                ((Monitor) personas.get(posicion)).setActivo(!((Monitor) personas.get(posicion)).isActivo());
+            }
         }else{
 
         }
+        System.out.println(personas.get(posicion));
     }
 
     /**

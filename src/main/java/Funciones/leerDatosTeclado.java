@@ -134,7 +134,7 @@ public class leerDatosTeclado {
 
     public static String leerString(String mensaje) {
         Scanner input = new Scanner(System.in);
-        String recu = "";
+        String recu;
 
         System.out.println(mensaje);
         recu = input.nextLine();
