@@ -10,6 +10,7 @@ import Funciones.leerDatosTeclado;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 public class GymTonificate {
 
@@ -36,30 +37,50 @@ public class GymTonificate {
         System.out.println("Bienvenido a la Aplicación GymTonificate");
         System.out.println("A continuación le dejamos un menú con las opciones de gestión");
 
-        //Recoger decisión del usuario
-        int decision = menu();
+        int decision;
+        //Bucle principal
+        do {
+            //Recoger decisión del usuario
+            decision = menu();
 
-        switch(decision){
-            case ALTA -> {
-                Persona nueva;
-                do {
-                    int tipo = tipoPersona();
-                    nueva = altaPersona(tipo);
-                }while(nueva == null);
-                personas.add(nueva);
+            switch (decision) {
+                case ALTA -> {
+                    Persona nueva;
+                    do {
+                        int tipo = tipoPersona();
+                        nueva = altaPersona(tipo);
+                    } while (nueva == null);
+                    personas.add(nueva);
+                }
+                case BAJA -> {
+                    String documento = leerDatosTeclado.leerString("Deme su ID para borrar su cuenta (NIF,NIE,CIF)");
+                    personas.removeIf(s -> s.getDNI().equals(documento));
+                }
+                case MODIFICAR -> {
+                    String documento = leerDatosTeclado.leerString("Deme su ID para modificar su cuenta (NIF,NIE,CIF)");
+                    int posicion = 0;
+                    boolean modificar = false;
+                    if(!personas.isEmpty()) {
+                        if (funcionesValidadoras.validarId(documento)) {
+                            for (Persona c : personas) {
+                                if (c != null && c.getDNI().equals(documento)) {
+                                    posicion = personas.indexOf(c);
+                                    modificar = true;
+                                }
+                            }
+                            if (modificar) {
+                                modificarPersona(posicion);
+                            }
+                        } else {
+                            System.out.println("Su DNI no es válido, inténtelo de nuevo");
+                        }
+                    }else{
+                        System.out.println("No hay personas registradas ahora mismo");
+                    }
+                }
             }
-            case BAJA -> {
-                String documento = leerDatosTeclado.leerString("Deme su ID para borrar su cuenta (NIF,NIE,CIF)");
-                personas.removeIf(s -> s.getDNI().equals(documento));
-            }
-            case MODIFICAR -> {
-                String documento = leerDatosTeclado.leerString("Deme su ID para modificar su cuenta (NIF,NIE,CIF)");
-
-            }
-        }
-        System.out.println(personas.get(0));
+        } while (decision != SALIR);
     }
-    
     private static int menu(){
         int eleccion;
         
@@ -80,6 +101,11 @@ public class GymTonificate {
 
         return eleccion;
     }
+
+    /**
+     * Lee el tipo de persona que se intenta registrar y lo valida
+     * @return int (Socio => 1), (Monitor => 2) y (Empleado => 3)
+     */
     private static int tipoPersona(){
         int decision;
         do{
@@ -89,7 +115,8 @@ public class GymTonificate {
     }
 
     /**
-     * Función que se encarga de recibir los datos, y crear una persona dependiendo de su tipo (Empleado, Monitor o Socio)
+     * Función que recibe el tipo de Persona a crear, se encarga de pedir los datos del usuario y redirigirlos dependiendo
+     * de que tipo de usuario se quiera crear.
      *
      * @param tipo 1 => Socio | 2 => Monitor | 3 => Empleado
      * @return <em>Persona</em>
@@ -189,10 +216,154 @@ public class GymTonificate {
         return nueva;
     }
 
+    /**
+     * Modifica los cambios de la persona
+     * @param posicion Posición de la persona a modificar
+     */
     public static void modificarPersona(final int posicion){
+        System.out.println("¿Que campo desea modificar?");
 
+        //Nombre
+        System.out.println("Nombre => " + personas.get(posicion).getNombre());
+        String eleccion = leerDatosTeclado.leerString("Introduzca un nombre si desea cambiarlo, sino pulse enter: ");
+        if(!eleccion.isEmpty()){
+            personas.get(posicion).setNombre(eleccion);
+        }
+
+        //DNI
+        System.out.println("DNI => "+personas.get(posicion).getDNI());
+        eleccion = leerDatosTeclado.leerString("Introduzca un DNI si desea cambiarlo, sino, pulse enter");
+        while(!eleccion.isEmpty()) {
+            if(funcionesValidadoras.validarId(eleccion)){
+                personas.get(posicion).setDNI(eleccion);
+            }else{
+                eleccion = leerDatosTeclado.leerString("Introduzcalo de nuevo o pulse enter");
+            }
+        }
+
+        //Dirección
+        System.out.println("Dirección => "+personas.get(posicion).getDireccion());
+        eleccion = leerDatosTeclado.leerString("Introduzca una dirección si desea cambiarla, sino, pulse enter");
+        if(!eleccion.isEmpty()){
+            personas.get(posicion).setDireccion(eleccion);
+        }
+
+        //Localidad
+        System.out.println("Localidad => "+personas.get(posicion).getLocalidad());
+        eleccion = leerDatosTeclado.leerString("Introduzca una localidad si desea cambiarla, sino, pulse enter");
+        if(!eleccion.isEmpty()){
+            personas.get(posicion).setLocalidad(eleccion);
+        }
+
+        //Provincia
+        System.out.println("Provincia => "+personas.get(posicion).getProvincia());
+        eleccion = leerDatosTeclado.leerString("Introduzca una provincia si desea cambiarla, sino, pulse enter");
+        if(!eleccion.isEmpty()){
+            personas.get(posicion).setProvincia(eleccion);
+        }
+
+        //Codigo Postal
+        System.out.println("Código postal => "+personas.get(posicion).getCodigoPostal());
+        eleccion = leerDatosTeclado.leerString("Introduzca un código postal si desea cambiarlo, sino, pulse enter");
+        while(!eleccion.isEmpty()){
+            if(eleccion.length() == 5) {
+                personas.get(posicion).setCodigoPostal(eleccion);
+            }else{
+                eleccion = leerDatosTeclado.leerString("Introduzcalo de nuevo o pulse enter");
+            }
+        }
+
+        //Teléfono
+        System.out.println("Teléfono => "+personas.get(posicion).getTelefono());
+        eleccion = leerDatosTeclado.leerString("Introduzca un teléfono si desea cambiarlo, sino, pulse enter");
+        while(!eleccion.isEmpty()){
+            if(eleccion.length() == 9) {
+                personas.get(posicion).setTelefono(eleccion);
+            }else{
+                eleccion = leerDatosTeclado.leerString("Introduzcalo de nuevo o pulse enter");
+            }
+        }
+
+        //Fecha Nacimiento
+        System.out.println("Fecha nacimiento => "+personas.get(posicion).getDireccion());
+        eleccion = leerDatosTeclado.leerString("¿Quiere cambiarla? (S/N)").toUpperCase(Locale.ROOT);
+        if(eleccion.charAt(0) == 'S'){
+            int dia = leerDatosTeclado.leerEntero("Introduzca el día de su nacimiento", 1, 31);
+            int mes = leerDatosTeclado.leerEntero("Introduzca el mes de su nacimiento", 1 , 12);
+            mes += 1;
+            int year;
+            do{
+                year = leerDatosTeclado.leerEntero("Introduzca el año de su nacimiento");
+            }while(Calendar.YEAR - year > 99);
+            Calendar nuevo = new GregorianCalendar(year, mes, dia);
+            personas.get(posicion).setFechaNacimiento(nuevo);
+        }
+
+        //Sexo
+        System.out.println("Sexo => "+personas.get(posicion).getSexo());
+        eleccion = leerDatosTeclado.leerString("Introduzca H/M si desea cambiarlo, sino, pulse enter");
+        if(!eleccion.isEmpty() && eleccion.charAt(0) == 'H'){
+            personas.get(posicion).setSexo('H');
+        }else if(!eleccion.isEmpty() && eleccion.charAt(0) == 'M'){
+            personas.get(posicion).setSexo('M');
+        }
+
+        //Atributos concretos de cada subclase
+        if(personas.get(posicion) instanceof Socio){
+            //Sesiones
+            System.out.println("Sesiones =>"+ ((Socio) personas.get(posicion)).getSesionesSemanales());
+            eleccion = leerDatosTeclado.leerString("Pulse enter para continuar o cualquier caracter para cambiarlas");
+            if(!eleccion.isEmpty()){
+                int sesiones = leerDatosTeclado.leerEntero("Introduzca las sesiones que desea: ", 2, 6);
+                ((Socio) personas.get(posicion)).setSesionesSemanales(sesiones);
+            }
+            //Pagado
+            if(!((Socio) personas.get(posicion)).getPagado()){
+                eleccion = leerDatosTeclado.leerString("¿No ha pagado sus cuotas, desea pagarlas? (S/N)");
+                if(!eleccion.isEmpty() && eleccion.charAt(0) == 'S'){
+                    ((Socio) personas.get(posicion)).setPagado(true);
+                }
+            }
+            //Lesiones
+            eleccion = leerDatosTeclado.leerString("Introduzca nuevas lesiones si las tiene, sino, pulse enter");
+            if(!eleccion.isEmpty()){
+                ((Socio) personas.get(posicion)).setLesiones(eleccion);
+            }
+        }else if(personas.get(posicion) instanceof Monitor){
+            //Sueldo
+            System.out.println("Sueldo => "+((Socio) personas.get(posicion)).getCuota());
+            eleccion = leerDatosTeclado.leerString("Desea cambiar el sueldo de "+personas.get(posicion).getNombre()+"?" +
+                    "Pulse enter para continuar sin cambios, cualquier letra para cambiarlo");
+            if(!eleccion.isEmpty()){
+                float sueldo = leerDatosTeclado.leerFloat("Introduzca el sueldo nuevo", 950);
+                ((Monitor) personas.get(posicion)).setSueldo(sueldo);
+            }
+            //Especialidad
+            System.out.println("Especialidad => "+((Monitor) personas.get(posicion)).getEspecialidad());
+            eleccion = leerDatosTeclado.leerString("Si desea cambiar su especialidad, introduzcala, sino, pulse enter");
+            boolean cambiar = false;
+            if(!eleccion.isEmpty()){
+                for(String esp:listaEspecialidades){
+                    if(eleccion.equals(esp)){
+                        cambiar = true;
+                    }
+                }
+                if(cambiar){
+                    ((Monitor) personas.get(posicion)).setEspecialidad(eleccion);
+                }
+            }
+            //Activo
+            System.out.println("Activo => ");
+        }else{
+
+        }
     }
 
+    /**
+     * Función que crea un Calendar según los datos del Usuario
+     * @param fechaAlta fecha en la que se dió de alta con la que se validará la edad
+     * @return Calendar con la fecha de nacimiento del usuario
+     */
     public static Calendar leerFechaNacimiento(Calendar fechaAlta){
         int alta = fechaAlta.get(Calendar.YEAR);
         int dia = leerDatosTeclado.leerEntero("Dame tu día de nacimiento", 1, 31);

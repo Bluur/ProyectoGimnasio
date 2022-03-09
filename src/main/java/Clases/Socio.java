@@ -1,6 +1,7 @@
 
 package Clases;
 
+
 import java.util.Calendar;
 
 public class Socio extends Persona {
@@ -44,7 +45,7 @@ public class Socio extends Persona {
         this.cuota = sesionesSemanales * 8;
     }
 
-    public boolean isPagado() {
+    public boolean getPagado() {
         return pagado;
     }
 
@@ -57,6 +58,7 @@ public class Socio extends Persona {
     }
 
     public void setLesiones(String lesiones) {
-        this.lesiones = lesiones;
+        this.lesiones += lesiones;
     }
+
 }
