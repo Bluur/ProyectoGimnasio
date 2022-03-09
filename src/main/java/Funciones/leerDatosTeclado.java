@@ -85,6 +85,20 @@ public class leerDatosTeclado {
         return numero;
     }
 
+    public static float leerFloat(String mensaje, float minimo) {
+        Scanner input = new Scanner(System.in);
+        float numero;
+        System.out.println(mensaje);
+        do {
+            while (!input.hasNextFloat()) {
+                System.out.println("Ese número no me sirve");
+                input.next();
+            }
+            numero = input.nextFloat();
+        } while (numero <= minimo);
+        return numero;
+    }
+
     public static String leerString(String mensaje, String condicion1, String condicion2) {
         Scanner input = new Scanner(System.in);
         String recu;
@@ -136,6 +150,16 @@ public class leerDatosTeclado {
         do{
             letra = input.next().charAt(0);
         }while(letra != condicion1 && letra != condicion2);
+
+        return letra;
+    }
+
+    public static char leerChar(String mensaje){
+        Scanner input = new Scanner(System.in);
+
+        char letra;
+        System.out.println(mensaje);
+        letra = input.next().charAt(0);
 
         return letra;
     }

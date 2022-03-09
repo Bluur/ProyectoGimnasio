@@ -40,6 +40,7 @@ public abstract class Persona implements Comparable<Persona> {
             throw new IllegalArgumentException("El sexo debe ser H o M");
         }
 
+        int mes = 1 + fechaAlta.get(Calendar.MONTH);
         this.nombre = nombre;
         this.DNI = DNI;
         this.direccion = direccion;
@@ -47,8 +48,8 @@ public abstract class Persona implements Comparable<Persona> {
         this.provincia = provincia;
         this.codigoPostal = codigoPostal;
         this.telefono = telefono;
-        this.fechaAlta = new GregorianCalendar(fechaAlta.get(Calendar.YEAR), fechaAlta.get(Calendar.MONTH), fechaAlta.get(Calendar.DAY_OF_WEEK));
-        this.fechaNacimiento = new GregorianCalendar(fechaNacimiento.get(Calendar.YEAR), fechaNacimiento.get(Calendar.MONTH), fechaNacimiento .get(Calendar.DAY_OF_WEEK));
+        this.fechaAlta = new GregorianCalendar(fechaAlta.get(Calendar.YEAR), mes, fechaAlta.get(Calendar.DAY_OF_WEEK));
+        this.fechaNacimiento = new GregorianCalendar(fechaNacimiento.get(Calendar.YEAR), mes, fechaNacimiento.get(Calendar.DAY_OF_MONTH));
         this.sexo = sexo;
     }
 
@@ -162,8 +163,14 @@ public abstract class Persona implements Comparable<Persona> {
                 ", provincia='" + provincia + '\'' +
                 ", codigoPostal='" + codigoPostal + '\'' +
                 ", telefono='" + telefono + '\'' +
-                ", fechaAlta=" + fechaAlta +
-                ", fechaNacimiento=" + fechaNacimiento +
+                ", fechaAlta=" +
+                fechaAlta.get(Calendar.DAY_OF_WEEK) + " " +
+                fechaAlta.get(Calendar.MONTH) +" "+
+                fechaAlta.get(Calendar.YEAR) +
+                ", fechaNacimiento="  +
+                fechaNacimiento.get(Calendar.DAY_OF_WEEK)+ " " +
+                fechaNacimiento.get(Calendar.MONTH) + " " +
+                fechaNacimiento.get(Calendar.YEAR) +
                 ", sexo=" + sexo +
                 '}';
     }
