@@ -41,8 +41,11 @@ public class GymTonificate {
 
         switch(decision){
             case ALTA -> {
-                int tipo = tipoPersona();
-                Persona nueva = altaPersona(tipo);
+                Persona nueva;
+                do {
+                    int tipo = tipoPersona();
+                    nueva = altaPersona(tipo);
+                }while(nueva == null);
                 personas.add(nueva);
             }
             case BAJA -> {
@@ -179,6 +182,7 @@ public class GymTonificate {
                 nueva = new Empleado(nombre, DNI, direccion, localidad, provincia, codigoPostal, telefono, fechaAlta, fechaNacimiento, sexo, tipoTrabajo, sueldo, extension);
             }
             default -> {
+                System.out.println("Los datos introducidos no son válidos");
                 nueva = null;
             }
         }
