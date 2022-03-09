@@ -15,7 +15,10 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 public class PersonaTest {
 
-    
+    Calendar fechaActual;
+    Calendar errorEdad;
+    Calendar fechaPrueba;
+
     public PersonaTest() {
     }
     
@@ -29,7 +32,9 @@ public class PersonaTest {
     
     @BeforeEach
     public void setUp() {
-
+        fechaActual = new GregorianCalendar();
+        errorEdad = new GregorianCalendar(1922, Calendar.AUGUST, 17);
+        fechaPrueba = new GregorianCalendar(1999, Calendar.AUGUST, 17);
     }
     
     @AfterEach
@@ -40,7 +45,7 @@ public class PersonaTest {
     public void testSomeMethod() {
         
     }
-    
+    //Comprueba la salida apropiada de excepciones por parte del constructor
     @ParameterizedTest
     @CsvSource({
         "Miguel, 77446461, Calle almuñecar, Granada, Granada, 18006, 958945139, H, El DNI no es válido",
@@ -49,26 +54,32 @@ public class PersonaTest {
     })
     public void testConstructor(String nombre, String DNI, String direccion, String localidad, String provincia, String codigoPostal, String telefono, char sexo, String expRes){
         Exception excepcion = assertThrows(IllegalArgumentException.class, () ->{
+            Persona prueba = new Empleado(nombre, DNI, direccion, localidad, provincia, codigoPostal, telefono, fechaActual, errorEdad, sexo, "Trabajo", 950, "+34");
         });
         
         assertEquals(expRes, excepcion.getMessage());
         
     }
-    
+    //Comprueba la salida de la excepción al meter una edad errónea
     @ParameterizedTest
     @CsvSource({
         "Miguel, 77446461X, Calle almuñecar, Granada, Granada, 18006, 958945139, H, La edad no puede ser mayor que 99"
     })
     public void testConstructorFecha(String nombre, String DNI, String direccion, String localidad, String provincia, String codigoPostal, String telefono, char sexo, String expRes){
         Exception excepcion = assertThrows(IllegalArgumentException.class, () ->{
+            Persona prueba = new Empleado(nombre, DNI, direccion, localidad, provincia, codigoPostal, telefono, fechaActual, errorEdad, sexo, "Trabajo", 950, "+34");
         });
         
         assertEquals(expRes, excepcion.getMessage());
     }
 
-    @Test
-    public void testGetEdad(){
-
+    @ParameterizedTest
+    @CsvSource({
+            "Miguel, 77446461X, Calle almuñecar, Granada, Granada, 18006, 958945139, H"
+    })
+    public void testGetEdad(String nombre, String DNI, String direccion, String localidad, String provincia, String codigoPostal, String telefono, char sexo){
+        Persona prueba = new Empleado(nombre, DNI, direccion, localidad, provincia, codigoPostal, telefono, fechaActual, fechaPrueba, sexo, "Trabajo", 950, "+34");
+        assertEquals(prueba.getEdad(), 23);
     }
     
 }
