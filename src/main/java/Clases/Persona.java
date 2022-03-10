@@ -163,16 +163,15 @@ public abstract class Persona implements Comparable<Persona> {
                 ", provincia='" + provincia + '\'' +
                 ", codigoPostal='" + codigoPostal + '\'' +
                 ", telefono='" + telefono + '\'' +
-                ", fechaAlta=" +
-                fechaAlta.get(Calendar.DAY_OF_WEEK) + " " +
-                fechaAlta.get(Calendar.MONTH) +" "+
-                fechaAlta.get(Calendar.YEAR) +
-                ", fechaNacimiento="  +
-                fechaNacimiento.get(Calendar.DAY_OF_WEEK)+ " " +
-                fechaNacimiento.get(Calendar.MONTH) + " " +
-                fechaNacimiento.get(Calendar.YEAR) +
+                ", fechaAlta=" + fechaToString(this.fechaAlta) +
+                ", fechaNacimiento="  + fechaToString(this.fechaNacimiento)+
                 ", sexo=" + sexo +
                 '}';
+    }
+
+
+    public String fechaToString(Calendar fecha){
+        return ""+fecha.get(Calendar.DAY_OF_MONTH)+" " +fecha.get(Calendar.MONTH) +" "+fecha.get(Calendar.YEAR);
     }
 
     @Override

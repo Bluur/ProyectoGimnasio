@@ -33,6 +33,12 @@ public class GymTonificate {
         listaEspecialidades = new ArrayList<>();
         listaTrabajos = new ArrayList<>();
 
+        //Prueba
+        Calendar fechaAltaPrueba = new GregorianCalendar();
+        Calendar fechaNacimientoPrueba = new GregorianCalendar(1999, Calendar.AUGUST, 17);
+        Persona prueba = new Socio("Miguel", "77446461X", "granada", "granada", "granada", "18006", "604101255", fechaAltaPrueba, fechaNacimientoPrueba, 'H', 2, true, "Dierna");
+        personas.add(prueba);
+
         //Mensaje de bienvenida
         System.out.println("Bienvenido a la Aplicación GymTonificate");
         System.out.println("A continuación le dejamos un menú con las opciones de gestión");
@@ -222,6 +228,7 @@ public class GymTonificate {
      */
     public static void modificarPersona(final int posicion){
         System.out.println("¿Que campo desea modificar?");
+        boolean continuar = false;
 
         //Nombre
         System.out.println("Nombre => " + personas.get(posicion).getNombre());
@@ -233,11 +240,15 @@ public class GymTonificate {
         //DNI
         System.out.println("DNI => "+personas.get(posicion).getDNI());
         eleccion = leerDatosTeclado.leerString("Introduzca un DNI si desea cambiarlo, sino, pulse enter");
-        while(!eleccion.isEmpty()) {
+        while(!eleccion.isEmpty() && !continuar) {
             if(funcionesValidadoras.validarId(eleccion)){
                 personas.get(posicion).setDNI(eleccion);
+                continuar = true;
             }else{
                 eleccion = leerDatosTeclado.leerString("Introduzcalo de nuevo o pulse enter");
+                if(eleccion.isEmpty()){
+                    continuar = true;
+                }
             }
         }
 
@@ -265,27 +276,37 @@ public class GymTonificate {
         //Codigo Postal
         System.out.println("Código postal => "+personas.get(posicion).getCodigoPostal());
         eleccion = leerDatosTeclado.leerString("Introduzca un código postal si desea cambiarlo, sino, pulse enter");
-        while(!eleccion.isEmpty()){
+        continuar = false;
+        while(!eleccion.isEmpty() && !continuar){
             if(eleccion.length() == 5) {
                 personas.get(posicion).setCodigoPostal(eleccion);
+                continuar = true;
             }else{
                 eleccion = leerDatosTeclado.leerString("Introduzcalo de nuevo o pulse enter");
+                if(eleccion.isEmpty()){
+                    continuar = true;
+                }
             }
         }
 
         //Teléfono
         System.out.println("Teléfono => "+personas.get(posicion).getTelefono());
         eleccion = leerDatosTeclado.leerString("Introduzca un teléfono si desea cambiarlo, sino, pulse enter");
-        while(!eleccion.isEmpty()){
+        continuar = false;
+        while(!eleccion.isEmpty() && !continuar){
             if(eleccion.length() == 9) {
                 personas.get(posicion).setTelefono(eleccion);
+                continuar = true;
             }else{
                 eleccion = leerDatosTeclado.leerString("Introduzcalo de nuevo o pulse enter");
+                if(eleccion.isEmpty()){
+                    continuar = true;
+                }
             }
         }
 
         //Fecha Nacimiento
-        System.out.println("Fecha nacimiento => "+personas.get(posicion).getDireccion());
+        System.out.println("Fecha nacimiento => "+personas.get(posicion).getFechaNacimiento());
         eleccion = leerDatosTeclado.leerString("¿Quiere cambiarla? (S/N)").toUpperCase(Locale.ROOT);
         if(eleccion.charAt(0) == 'S'){
             int dia = leerDatosTeclado.leerEntero("Introduzca el día de su nacimiento", 1, 31);
