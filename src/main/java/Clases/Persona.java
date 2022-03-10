@@ -40,7 +40,8 @@ public abstract class Persona implements Comparable<Persona> {
             throw new IllegalArgumentException("El sexo debe ser H o M");
         }
 
-        int mes = 1 + fechaAlta.get(Calendar.MONTH);
+        int mesAlta = fechaAlta.get(Calendar.MONTH) - 1;
+        int mesNac = fechaNacimiento.get(Calendar.MONTH) - 1;
         this.nombre = nombre;
         this.DNI = DNI;
         this.direccion = direccion;
@@ -48,8 +49,8 @@ public abstract class Persona implements Comparable<Persona> {
         this.provincia = provincia;
         this.codigoPostal = codigoPostal;
         this.telefono = telefono;
-        this.fechaAlta = new GregorianCalendar(fechaAlta.get(Calendar.YEAR), mes, fechaAlta.get(Calendar.DAY_OF_WEEK));
-        this.fechaNacimiento = new GregorianCalendar(fechaNacimiento.get(Calendar.YEAR), mes, fechaNacimiento.get(Calendar.DAY_OF_MONTH));
+        this.fechaAlta = new GregorianCalendar(fechaAlta.get(Calendar.YEAR), mesAlta, fechaAlta.get(Calendar.DAY_OF_MONTH));
+        this.fechaNacimiento = new GregorianCalendar(fechaNacimiento.get(Calendar.YEAR), mesNac, fechaNacimiento.get(Calendar.DAY_OF_MONTH));
         this.sexo = sexo;
     }
 

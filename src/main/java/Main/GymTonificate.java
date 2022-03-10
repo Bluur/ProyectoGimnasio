@@ -35,7 +35,7 @@ public class GymTonificate {
 
         //Prueba
         Calendar fechaAltaPrueba = new GregorianCalendar();
-        Calendar fechaNacimientoPrueba = new GregorianCalendar(1999, Calendar.AUGUST, 17);
+        Calendar fechaNacimientoPrueba = new GregorianCalendar(1999, 9, 17);
         Persona prueba = new Socio("Miguel", "77446461X", "granada", "granada", "granada", "18006", "604101255", fechaAltaPrueba, fechaNacimientoPrueba, 'H', 2, true, "Dierna");
         personas.add(prueba);
 
@@ -57,7 +57,7 @@ public class GymTonificate {
                         nueva = altaPersona(tipo);
                     } while (nueva == null);
                     //Si contiene ya una persona con ese DNI no la añade
-                    if(personas.contains(nueva)){
+                    if(!personas.contains(nueva)){
                         personas.add(nueva);
                     }else{
                         System.out.println("No se ha podido añadir porque ya esta presente en nuestra base de datos");
@@ -81,6 +81,7 @@ public class GymTonificate {
                             }
                             if (modificar) {
                                 modificarPersona(posicion);
+                                System.out.println("Sus Nuevos datos son: "+personas.get(posicion).toString());
                             }
                         } else {
                             System.out.println("Su DNI no es válido, inténtelo de nuevo");
@@ -312,7 +313,17 @@ public class GymTonificate {
 
         //Fecha Nacimiento
         System.out.println("Fecha nacimiento => "+personas.get(posicion).fechaToString());
-        
+        eleccion = leerDatosTeclado.leerString("¿Desea cambiar la fecha? Enter para continuar sin cambios");
+        if(!eleccion.isEmpty()){
+            int dia = leerDatosTeclado.leerEntero("Dia de nacimiento", 1, 31);
+            int mes = leerDatosTeclado.leerEntero("Mes de nacimiento", 1, 12);
+            int year;
+            do{
+                year = leerDatosTeclado.leerEntero("Deme su año de nacimiento");
+            }while(Calendar.YEAR - year > 99);
+            Calendar fechaNueva = new GregorianCalendar(year, mes, dia);
+            personas.get(posicion).setFechaNacimiento(fechaNueva);
+        }
 
         //Sexo
         System.out.println("Sexo => "+personas.get(posicion).getSexo());
