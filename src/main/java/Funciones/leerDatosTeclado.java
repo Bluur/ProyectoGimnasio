@@ -95,7 +95,7 @@ public class leerDatosTeclado {
                 input.next();
             }
             numero = input.nextFloat();
-        } while (numero <= minimo);
+        } while (numero < minimo);
         return numero;
     }
 
@@ -159,7 +159,7 @@ public class leerDatosTeclado {
 
         char letra;
         System.out.println(mensaje);
-        letra = input.next().charAt(0);
+        letra = input.nextLine().charAt(0);
 
         return letra;
     }

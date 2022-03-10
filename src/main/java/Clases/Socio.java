@@ -24,8 +24,8 @@ public class Socio extends Persona {
     }
 
     public String toString(){
-        return super.toString() + "Cuota semanal = " + cuota + "Sesiones semanales =" + sesionesSemanales + "Pagado = "
-                + pagado + "Lesiones conocida = " + lesiones;
+        return super.toString() + ", Cuota semanal = " + cuota + ", Sesiones semanales =" + sesionesSemanales + ", Pagado = "
+                + pagado + ", Lesiones conocidas = " + lesiones + '}';
     }
 
     public double getCuota() {

@@ -156,28 +156,28 @@ public class GymTonificate {
                     int gestion;
                     final int LIST = 1;
                     final int ADD = 2;
-                    final int MODIFY = 3;
-                    
+                    final int REMOVE= 3;
+
                     gestion = leerDatosTeclado.leerEntero("Gestión especialidades -> (Listar => 1) (Añadir => 2) (Eliminar => 3)", 1, 3);
                     
                     int contador = 1;
                     
                     switch(gestion){
-                        case 1 ->{
+                        case LIST ->{
                             for(String s : listaEspecialidades){
                                 String numero = "" + contador+".-";
                                 System.out.println(numero + s);
                                 contador++;
                             }
                         }
-                        case 2 ->{
+                        case ADD ->{
                             String add = leerDatosTeclado.leerString("Introduce la nueva especialidad");
-                            boolean continuar = continuar(add);
+                            boolean continuar = continuar(add, 1);
                             if(continuar){
                                 listaEspecialidades.add(add);
                             }
                         }
-                        case 3 ->{
+                        case REMOVE ->{
                             eliminarEspecialidades();
                         }
                     }
@@ -187,28 +187,29 @@ public class GymTonificate {
                     int gestion;
                     final int LIST = 1;
                     final int ADD = 2;
-                    final int MODIFY = 3;
+                    final int REMOVE = 3;
                     
                     gestion = leerDatosTeclado.leerEntero("Gestión especialidades -> (Listar => 1) (Añadir => 2) (Eliminar => 3)", 1, 3);
                     
                     int contador = 1;
                     
                     switch(gestion){
-                        case 1 ->{
+                        case LIST ->{
                             for(String s : listaTrabajos){
                                 String numero = "" + contador+".-";
                                 System.out.println(numero + s);
                                 contador ++;
                             }
                         }
-                        case 2 ->{
+                        case ADD ->{
                             String add = leerDatosTeclado.leerString("Introduce el nuevo trabajo");
-                            boolean continuar = continuar(add);
+                            //Continuar(String add, int accion) => accion = 1 añadir -> 1 borrar -> 2
+                            boolean continuar = continuar(add, 1);
                             if(continuar){
                                 listaTrabajos.add(add);
                             }
                         }
-                        case 3 ->{
+                        case REMOVE ->{
                             eliminarTrabajos();
                         }
                     }
@@ -217,6 +218,11 @@ public class GymTonificate {
             }
         } while (decision != SALIR);
     }
+
+    /**
+     * Menú principal con el que sacaremos las opciones por pantalla y recogeremos los datos
+     * @return int con la elección del usuario
+     */
     private static int menu(){
         int eleccion;
         
@@ -321,7 +327,7 @@ public class GymTonificate {
                 float sueldo = leerDatosTeclado.leerFloat("Deme el sueldo", 950);
 
                 //Activo
-                char decision = leerDatosTeclado.leerChar("Está activo (S/N => (Default = S))");
+                char decision = leerDatosTeclado.leerChar("¿Está activo? (S/N)");
                 activo = decision != 'N';
 
                 nueva = new Monitor(nombre, DNI, direccion, localidad, provincia, codigoPostal, telefono, fechaAlta, fechaNacimiento, sexo, especialidad, sueldo, activo);
@@ -436,7 +442,7 @@ public class GymTonificate {
         }
 
         //Fecha Nacimiento
-        System.out.println("Fecha nacimiento => "+personas.get(posicion).fechaToString());
+        System.out.println("Fecha nacimiento => "+personas.get(posicion).fechaNacToString());
         eleccion = leerDatosTeclado.leerString("¿Desea cambiar la fecha? Enter para continuar sin cambios");
         if(!eleccion.isEmpty()){
             int dia = leerDatosTeclado.leerEntero("Dia de nacimiento", 1, 31);
@@ -510,7 +516,7 @@ public class GymTonificate {
                 ((Monitor) personas.get(posicion)).setActivo(!((Monitor) personas.get(posicion)).isActivo());
             }
         }else{
-
+            throw new IllegalArgumentException("Class not yet supported");
         }
     }
 
@@ -521,14 +527,13 @@ public class GymTonificate {
      */
     public static Calendar leerFechaNacimiento(Calendar fechaAlta){
         int dia = leerDatosTeclado.leerEntero("Dame tu día de nacimiento", 1, 31);
-        int mes = (leerDatosTeclado.leerEntero("Dame tu mes de nacimiento", 1, 12))+1;
+        int mes = (leerDatosTeclado.leerEntero("Dame tu mes de nacimiento", 1, 12))-1;
         int year;
         do{
             year = leerDatosTeclado.leerEntero("Dame tu año de nacimiento");
         }while(Calendar.YEAR - year > 99);
 
-        Calendar nacimiento = new GregorianCalendar(year, mes, dia);
-        return nacimiento;
+        return new GregorianCalendar(year, mes, dia);
     }
 
     /**
@@ -541,7 +546,7 @@ public class GymTonificate {
      */
     public static boolean contains(String aBuscar, ArrayList<String> lista){
         boolean contiene;
-        if(!lista.contains(aBuscar)){
+        if(lista.contains(aBuscar)){
             contiene = true;
         }else{
             contiene = false;
@@ -553,35 +558,63 @@ public class GymTonificate {
     /**
      * Funcion que recibe una string y pregunta al usuario si quiere continuar con los cambios
      * @param contenido contenido a cambiar
+     * @param accion 1 => si | 2 => no
      * @return boolean 
      */
-    public static boolean continuar(String contenido){
-        boolean continuar = false;
-        final int NO = 0;
+    public static boolean continuar(String contenido, final int accion){
+        final int ADD = 1;
+        final int REMOVE = 0;
+
+        boolean continuar;
         final int SI = 1;
-        System.out.println("Vas a añadir/quitar => "+contenido+" ¿estas seguro?");
-        int decision = leerDatosTeclado.leerEntero("Introduce 1 para si, 0 para no", 0, 1);
-        switch(decision){
-            case NO -> continuar = false;
-            case SI -> continuar = true;
+
+        if(accion == ADD){
+            System.out.println("Vas a añadir => "+contenido+" ¿estas seguro?");
         }
+
+        if(accion == REMOVE){
+            System.out.println("Vas a quitar => "+contenido+" ¿estas seguro?");
+        }
+
+        int decision = leerDatosTeclado.leerEntero("Introduce 1 para si, 0 para no", 0, 1);
+
+        continuar = decision == SI;
         return continuar;
     }
     
     /**
      * Saca por pantalla una a una las especialidades presentes en el programa
-     * En caso de introducir un caracter se borrará en caso contrario no
+     * En caso de introducir un caracter se borrará en caso contrario no.
      */
     public static void eliminarEspecialidades(){
+        //Array list en el que guardamos las posiciones de las strings que queremos eliminar
         ArrayList <Integer> aEliminar = new ArrayList<>();
+
+        //Recorremos el array de especialidades una por una, guardando su posicion en cada iteración
         for(String esp:listaEspecialidades){
             int posicion = listaEspecialidades.indexOf(esp);
+
+            //Se pregunta si se quiere borrar, si se introduce enter pasa al siguiente
             String eleccion = leerDatosTeclado.leerString("Si quiere eliminar "+esp+" introduzca cualquier carácter");
+
+            /*
+            Si se ha introducido algo, se llama a la funcion continuar, que confirma si se desea eleminar, y se añade
+            la posición antes guardada al array de posiciones
+              */
             if(!eleccion.isEmpty()){
-                aEliminar.add(posicion);
+                if(continuar(esp, 0)){
+                    aEliminar.add(posicion);
+                }
             }
         }
+
+        /*
+        Contador con el cual sabremos si se ha eliminado previamente otro objeto para que no haya problemas con el
+        indice
+         */
         int modificador = 0;
+
+        //Se elimina el indice guardado en el array de posiciones
         for(int s:aEliminar){
             listaEspecialidades.remove(s-modificador);
             modificador++;
@@ -590,18 +623,37 @@ public class GymTonificate {
     
     /**
      * Saca por pantalla una a una los trabajos presentes en el programa
-     * En caso de introducir un caracter se borrará en caso contrario no
+     * En caso de introducir un caracter se borrará en caso contrario no.
      */
     public static void eliminarTrabajos(){
+        //Array list en el que guardamos las posiciones de las strings que queremos eliminar
         ArrayList <Integer> aEliminar = new ArrayList<>();
-        for(String esp:listaTrabajos){
-            int posicion = listaTrabajos.indexOf(esp);
-            String eleccion = leerDatosTeclado.leerString("Si quiere eliminar "+esp+" introduzca cualquier carácter");
+
+        //Recorremos el array de especialidades una por una, guardando su posicion en cada iteración
+        for(String trabajo:listaTrabajos){
+            int posicion = listaTrabajos.indexOf(trabajo);
+
+            //Se pregunta si se quiere borrar, si se introduce enter pasa al siguiente
+            String eleccion = leerDatosTeclado.leerString("Si quiere eliminar "+trabajo+" introduzca cualquier carácter");
+
+            /*
+            Si se ha introducido algo, se llama a la funcion continuar, que confirma si se desea eleminar, y se añade
+            la posición antes guardada al array de posiciones
+              */
             if(!eleccion.isEmpty()){
-                aEliminar.add(posicion);
+                if(continuar(trabajo, 0)){
+                    aEliminar.add(posicion);
+                }
             }
         }
+
+        /*
+        Contador con el cual sabremos si se ha eliminado previamente otro objeto para que no haya problemas con el
+        indice
+         */
         int modificador = 0;
+
+        //Se elimina el indice guardado en el array de posiciones
         for(int s:aEliminar){
             listaTrabajos.remove(s-modificador);
             modificador++;

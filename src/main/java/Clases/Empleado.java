@@ -22,8 +22,8 @@ public class Empleado extends Persona{
     }
 
     public String toString(){
-         return super.toString() + "Tipo de Trabajo = " + this.tipoTrabajo + "Sueldo = " + this.sueldo
-                + "Extensión telefónica = " + this.extension;
+         return super.toString() + ", Tipo de Trabajo = " + this.tipoTrabajo + ", Sueldo = " + this.sueldo
+                + ", Extensión telefónica = " + this.extension;
     }
 
     public String getTipoTrabajo() {

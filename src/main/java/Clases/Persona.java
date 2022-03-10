@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Objects;
 
+
 public abstract class Persona implements Comparable<Persona> {
     private String nombre;
     private String DNI;
@@ -17,7 +18,20 @@ public abstract class Persona implements Comparable<Persona> {
     private Calendar fechaAlta;
     private Calendar fechaNacimiento;
     private char sexo;
-    
+
+    /**
+     * Constructor de la clase persona, es abstracta por lo cual se ha de invocar el constructor de una subclase.
+     * @param nombre String con el nombre
+     * @param DNI String con el DNI
+     * @param direccion String con la Dirección
+     * @param localidad String con la localidad
+     * @param provincia String con la provincia
+     * @param codigoPostal String con el codigo postal
+     * @param telefono String con el teléfono
+     * @param fechaAlta Usa la API Calendar de Java
+     * @param fechaNacimiento Usa la API Calendar de Java
+     * @param sexo Char (H/M)
+     */
     public Persona(String nombre, String DNI, String direccion, String localidad, String provincia, String codigoPostal, String telefono, Calendar fechaAlta, Calendar fechaNacimiento, char sexo){
         
         if(!funcionesValidadoras.validarId(DNI)){
@@ -40,7 +54,7 @@ public abstract class Persona implements Comparable<Persona> {
             throw new IllegalArgumentException("El sexo debe ser H o M");
         }
 
-        int mesAlta = fechaAlta.get(Calendar.MONTH) - 1;
+        int mesAlta = fechaAlta.get(Calendar.MONTH) + 1;
         int mesNac = fechaNacimiento.get(Calendar.MONTH) - 1;
         this.nombre = nombre;
         this.DNI = DNI;
@@ -133,9 +147,11 @@ public abstract class Persona implements Comparable<Persona> {
 
     public void setFechaNacimiento(Calendar fechaEntrada) {
         Calendar actualYear = new GregorianCalendar();
+
         if(actualYear.get(Calendar.YEAR) - fechaEntrada.get(Calendar.YEAR) > 99){
             throw new IllegalArgumentException("La edad no puede ser mayor que 99");
         }
+
         this.fechaNacimiento = fechaEntrada;
     }
 
@@ -144,9 +160,11 @@ public abstract class Persona implements Comparable<Persona> {
     }
 
     public void setSexo(char sexo) {
+
         if (sexo != 'H' && sexo != 'M') {
             throw new IllegalArgumentException("El sexo debe ser H o M");
         }
+
         this.sexo = sexo;
     }
 
@@ -157,22 +175,25 @@ public abstract class Persona implements Comparable<Persona> {
     @Override
     public String toString() {
         return "Persona{" +
-                "nombre='" + nombre + '\'' +
-                ", DNI='" + DNI + '\'' +
-                ", direccion='" + direccion + '\'' +
-                ", localidad='" + localidad + '\'' +
-                ", provincia='" + provincia + '\'' +
-                ", codigoPostal='" + codigoPostal + '\'' +
-                ", telefono='" + telefono + '\'' +
-                ", fechaAlta=" + fechaToString() +
-                ", fechaNacimiento="  + fechaToString()+
-                ", sexo=" + sexo +
-                '}';
+                "nombre= " + nombre + '\'' +
+                ", DNI = " + DNI + '\'' +
+                ", direccion = " + direccion + '\'' +
+                ", localidad = " + localidad + '\'' +
+                ", provincia = " + provincia + '\'' +
+                ", codigoPostal = " + codigoPostal + '\'' +
+                ", telefono = " + telefono + '\'' +
+                ", fechaAlta = " + fechaAltaToString() +
+                ", fechaNacimiento = "  + fechaNacToString()+
+                ", sexo=" + sexo;
+    }
+
+    public String fechaAltaToString(){
+        return ""+ this.fechaAlta.get(Calendar.DAY_OF_MONTH)+ " "+ this.fechaAlta.get(Calendar.MONTH)+ " "+ this.fechaAlta.get(Calendar.YEAR);
     }
 
 
-    public String fechaToString(){
-        return ""+this.fechaNacimiento.get(Calendar.DAY_OF_MONTH)+" " +this.fechaNacimiento.get(Calendar.MONTH) +" "+this.fechaNacimiento.get(Calendar.YEAR);
+    public String fechaNacToString(){
+        return ""+ this.fechaNacimiento.get(Calendar.DAY_OF_MONTH)+ " "+ this.fechaNacimiento.get(Calendar.MONTH)+ " "+ this.fechaNacimiento.get(Calendar.YEAR);
     }
 
     @Override
@@ -188,12 +209,17 @@ public abstract class Persona implements Comparable<Persona> {
         return Objects.hash(nombre, DNI, direccion, localidad, provincia, codigoPostal, telefono, fechaAlta, fechaNacimiento, sexo);
     }
 
+    /**
+     * Utiliza la interfaz comparable, en este caso el compareTo se ha implementado con la edad
+     * @param aComparar Persona a comparar con la actual
+     * @return int (-1 menor, 0 iguales, 1 mayor)
+     */
     @Override
-    public int compareTo(Persona o){
+    public int compareTo(Persona aComparar){
         final int edad;
-        if(getEdad() == o.getEdad()){
+        if(this.getEdad() == aComparar.getEdad()){
             edad = 0;
-        }else if(getEdad() < o.getEdad()){
+        }else if(this.getEdad() < aComparar.getEdad()){
             edad = -1;
         }else {
             edad = 1;

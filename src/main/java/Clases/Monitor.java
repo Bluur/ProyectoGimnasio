@@ -22,8 +22,8 @@ public class Monitor extends Persona {
     }
 
     public String toString(){
-        return super.toString() + "Especialidad = " + this.especialidad + "Sueldo = "+ sueldo
-                + "Activo = " + activo;
+        return super.toString() + ", Especialidad = " + this.especialidad + ", Sueldo = "+ sueldo
+                + ", Activo = " + activo + '}';
     }
 
     public String getEspecialidad() {
