@@ -56,7 +56,12 @@ public class GymTonificate {
                         int tipo = tipoPersona();
                         nueva = altaPersona(tipo);
                     } while (nueva == null);
-                    personas.add(nueva);
+                    //Si contiene ya una persona con ese DNI no la añade
+                    if(personas.contains(nueva)){
+                        personas.add(nueva);
+                    }else{
+                        System.out.println("No se ha podido añadir porque ya esta presente en nuestra base de datos");
+                    }
                 }
                 case BAJA -> {
                     String documento = leerDatosTeclado.leerString("Deme su ID para borrar su cuenta (NIF,NIE,CIF)");
@@ -306,19 +311,8 @@ public class GymTonificate {
         }
 
         //Fecha Nacimiento
-        System.out.println("Fecha nacimiento => "+personas.get(posicion).getFechaNacimiento());
-        eleccion = leerDatosTeclado.leerString("¿Quiere cambiarla? (S/N)").toUpperCase(Locale.ROOT);
-        if(eleccion.charAt(0) == 'S'){
-            int dia = leerDatosTeclado.leerEntero("Introduzca el día de su nacimiento", 1, 31);
-            int mes = leerDatosTeclado.leerEntero("Introduzca el mes de su nacimiento", 1 , 12);
-            mes += 1;
-            int year;
-            do{
-                year = leerDatosTeclado.leerEntero("Introduzca el año de su nacimiento");
-            }while(Calendar.YEAR - year > 99);
-            Calendar nuevo = new GregorianCalendar(year, mes, dia);
-            personas.get(posicion).setFechaNacimiento(nuevo);
-        }
+        System.out.println("Fecha nacimiento => "+personas.get(posicion).fechaToString());
+        
 
         //Sexo
         System.out.println("Sexo => "+personas.get(posicion).getSexo());
@@ -383,7 +377,6 @@ public class GymTonificate {
         }else{
 
         }
-        System.out.println(personas.get(posicion));
     }
 
     /**
