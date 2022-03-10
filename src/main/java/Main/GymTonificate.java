@@ -10,8 +10,17 @@ import Funciones.leerDatosTeclado;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Locale;
 
+/**
+ * Clase que contiene el MAIN y las funciones que este necesita
+ * main => Programa main
+ * menu => Menú principal que recoge la elección del usuario
+ * tipoPersona => Lee el tipo de persona validando el input del usuario
+ * Modificar persona => Big ol chunk de código spaghetti que modifica la persona
+ * leerFechaNacimiento => Crea un calendar con el input del usuario
+ * Contains => Busca en el array de Strings ya sea trabajo o especialidades
+ * @author Migue
+ */
 public class GymTonificate {
 
     private static ArrayList <Persona> personas;
@@ -32,6 +41,14 @@ public class GymTonificate {
         personas = new ArrayList<>();
         listaEspecialidades = new ArrayList<>();
         listaTrabajos = new ArrayList<>();
+        
+        listaEspecialidades.add("Aerobic");
+        listaEspecialidades.add("Calistenia");
+        listaEspecialidades.add("Crossfit");
+        
+        listaTrabajos.add("Limpiador");
+        listaTrabajos.add("Asistente");
+        listaTrabajos.add("Organizador");
 
         //Prueba
         Calendar fechaAltaPrueba = new GregorianCalendar();
@@ -48,7 +65,6 @@ public class GymTonificate {
         do {
             //Recoger decisión del usuario
             decision = menu();
-
             switch (decision) {
                 case ALTA -> {
                     Persona nueva;
@@ -56,6 +72,7 @@ public class GymTonificate {
                         int tipo = tipoPersona();
                         nueva = altaPersona(tipo);
                     } while (nueva == null);
+                    
                     //Si contiene ya una persona con ese DNI no la añade
                     if(!personas.contains(nueva)){
                         personas.add(nueva);
@@ -71,24 +88,131 @@ public class GymTonificate {
                     String documento = leerDatosTeclado.leerString("Deme su ID para modificar su cuenta (NIF,NIE,CIF)");
                     int posicion = 0;
                     boolean modificar = false;
+                    
+                    //Verifica si esta vacio el array personas
                     if(!personas.isEmpty()) {
+                        //Verifica validez del documento
                         if (funcionesValidadoras.validarId(documento)) {
+                            //Busca el documento
                             for (Persona c : personas) {
+                                //Comprueba que no sea nulo para no tener un pointer exception y compara
                                 if (c != null && c.getDNI().equals(documento)) {
+                                    //Guarda posición y cambia modificar a true
                                     posicion = personas.indexOf(c);
                                     modificar = true;
                                 }
                             }
+                            //Si modificar está activado inicializa la función modificarPersona()
                             if (modificar) {
                                 modificarPersona(posicion);
                                 System.out.println("Sus Nuevos datos son: "+personas.get(posicion).toString());
                             }
+                            //Si el documento no esta lanza un mensaje
                         } else {
                             System.out.println("Su DNI no es válido, inténtelo de nuevo");
                         }
                     }else{
+                        //Si está vacío
                         System.out.println("No hay personas registradas ahora mismo");
                     }
+                }
+                case LISTARPERSONAS -> {
+                    for(Persona c:personas){
+                        System.out.println(c.toString());
+                    }
+                }
+                case LISTARTIPO -> {
+                    final int SOCIO = 1;
+                    final int MONITOR = 2;
+                    final int EMPLEADO = 3;
+                    
+                    int tipo = tipoPersona();
+                    
+                    switch(tipo){
+                        case SOCIO ->{
+                            for(Persona c:personas){
+                                if(c instanceof Socio){
+                                    System.out.println(c.toString());
+                                }
+                            }
+                        }
+                        case MONITOR -> {
+                            for(Persona c:personas){
+                                if(c instanceof Monitor){
+                                    System.out.println(c.toString());
+                                }
+                            }
+                        }
+                        case EMPLEADO -> {
+                            for(Persona c:personas){
+                                if(c instanceof Empleado){
+                                    System.out.println(c.toString());
+                                }
+                            }
+                        }
+                    }
+                }
+                case GESTIONARESPECS -> {
+                    int gestion;
+                    final int LIST = 1;
+                    final int ADD = 2;
+                    final int MODIFY = 3;
+                    
+                    gestion = leerDatosTeclado.leerEntero("Gestión especialidades -> (Listar => 1) (Añadir => 2) (Eliminar => 3)", 1, 3);
+                    
+                    int contador = 1;
+                    
+                    switch(gestion){
+                        case 1 ->{
+                            for(String s : listaEspecialidades){
+                                String numero = "" + contador+".-";
+                                System.out.println(numero + s);
+                                contador++;
+                            }
+                        }
+                        case 2 ->{
+                            String add = leerDatosTeclado.leerString("Introduce la nueva especialidad");
+                            boolean continuar = continuar(add);
+                            if(continuar){
+                                listaEspecialidades.add(add);
+                            }
+                        }
+                        case 3 ->{
+                            eliminarEspecialidades();
+                        }
+                    }
+                    
+                }
+                case GESTIONARTRABAJOS -> {
+                    int gestion;
+                    final int LIST = 1;
+                    final int ADD = 2;
+                    final int MODIFY = 3;
+                    
+                    gestion = leerDatosTeclado.leerEntero("Gestión especialidades -> (Listar => 1) (Añadir => 2) (Eliminar => 3)", 1, 3);
+                    
+                    int contador = 1;
+                    
+                    switch(gestion){
+                        case 1 ->{
+                            for(String s : listaTrabajos){
+                                String numero = "" + contador+".-";
+                                System.out.println(numero + s);
+                                contador ++;
+                            }
+                        }
+                        case 2 ->{
+                            String add = leerDatosTeclado.leerString("Introduce el nuevo trabajo");
+                            boolean continuar = continuar(add);
+                            if(continuar){
+                                listaTrabajos.add(add);
+                            }
+                        }
+                        case 3 ->{
+                            eliminarTrabajos();
+                        }
+                    }
+                    
                 }
             }
         } while (decision != SALIR);
@@ -396,13 +520,12 @@ public class GymTonificate {
      * @return Calendar con la fecha de nacimiento del usuario
      */
     public static Calendar leerFechaNacimiento(Calendar fechaAlta){
-        int alta = fechaAlta.get(Calendar.YEAR);
         int dia = leerDatosTeclado.leerEntero("Dame tu día de nacimiento", 1, 31);
         int mes = (leerDatosTeclado.leerEntero("Dame tu mes de nacimiento", 1, 12))+1;
         int year;
         do{
             year = leerDatosTeclado.leerEntero("Dame tu año de nacimiento");
-        }while(alta - year > 99);
+        }while(Calendar.YEAR - year > 99);
 
         Calendar nacimiento = new GregorianCalendar(year, mes, dia);
         return nacimiento;
@@ -425,5 +548,63 @@ public class GymTonificate {
             System.out.println("Ese no está registrado, inténtelo de nuevo");
         }
         return contiene;
+    }
+    
+    /**
+     * Funcion que recibe una string y pregunta al usuario si quiere continuar con los cambios
+     * @param contenido contenido a cambiar
+     * @return boolean 
+     */
+    public static boolean continuar(String contenido){
+        boolean continuar = false;
+        final int NO = 0;
+        final int SI = 1;
+        System.out.println("Vas a añadir/quitar => "+contenido+" ¿estas seguro?");
+        int decision = leerDatosTeclado.leerEntero("Introduce 1 para si, 0 para no", 0, 1);
+        switch(decision){
+            case NO -> continuar = false;
+            case SI -> continuar = true;
+        }
+        return continuar;
+    }
+    
+    /**
+     * Saca por pantalla una a una las especialidades presentes en el programa
+     * En caso de introducir un caracter se borrará en caso contrario no
+     */
+    public static void eliminarEspecialidades(){
+        ArrayList <Integer> aEliminar = new ArrayList<>();
+        for(String esp:listaEspecialidades){
+            int posicion = listaEspecialidades.indexOf(esp);
+            String eleccion = leerDatosTeclado.leerString("Si quiere eliminar "+esp+" introduzca cualquier carácter");
+            if(!eleccion.isEmpty()){
+                aEliminar.add(posicion);
+            }
+        }
+        int modificador = 0;
+        for(int s:aEliminar){
+            listaEspecialidades.remove(s-modificador);
+            modificador++;
+        }
+    }
+    
+    /**
+     * Saca por pantalla una a una los trabajos presentes en el programa
+     * En caso de introducir un caracter se borrará en caso contrario no
+     */
+    public static void eliminarTrabajos(){
+        ArrayList <Integer> aEliminar = new ArrayList<>();
+        for(String esp:listaTrabajos){
+            int posicion = listaTrabajos.indexOf(esp);
+            String eleccion = leerDatosTeclado.leerString("Si quiere eliminar "+esp+" introduzca cualquier carácter");
+            if(!eleccion.isEmpty()){
+                aEliminar.add(posicion);
+            }
+        }
+        int modificador = 0;
+        for(int s:aEliminar){
+            listaTrabajos.remove(s-modificador);
+            modificador++;
+        }
     }
 }
