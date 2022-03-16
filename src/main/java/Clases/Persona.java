@@ -55,7 +55,7 @@ public abstract class Persona implements Comparable<Persona> {
         }
 
         int mesAlta = fechaAlta.get(Calendar.MONTH) + 1;
-        int mesNac = fechaNacimiento.get(Calendar.MONTH) - 1;
+        int mesNac = fechaNacimiento.get(Calendar.MONTH) + 1;
         this.nombre = nombre;
         this.DNI = DNI;
         this.direccion = direccion;
