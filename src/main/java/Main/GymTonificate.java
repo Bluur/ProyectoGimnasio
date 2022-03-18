@@ -43,19 +43,9 @@ public class GymTonificate {
         listaEspecialidades = new ArrayList<>();
         listaTrabajos = new ArrayList<>();
 
-        listaEspecialidades.add("Aerobic");
-        listaEspecialidades.add("Calistenia");
-        listaEspecialidades.add("Crossfit");
-
-        listaTrabajos.add("Limpiador");
-        listaTrabajos.add("Asistente");
-        listaTrabajos.add("Organizador");
-
-        //Prueba
-//        Calendar fechaAltaPrueba = new GregorianCalendar();
-//        Calendar fechaNacimientoPrueba = new GregorianCalendar(1999, 9, 17);
-//        Persona prueba = new Socio("Miguel", "77446461X", "granada", "granada", "granada", "18006", "604101255", fechaAltaPrueba, fechaNacimientoPrueba, 'H', 2, true, "Dierna");
-//        personas.add(prueba);
+        cargarEspecialidades(listaEspecialidades);
+        cargarTrabajos(listaTrabajos);
+        cargarPersonas(personas);
 
         //Mensaje de bienvenida
         System.out.println("Bienvenido a la Aplicación GymTonificate");
@@ -168,66 +158,105 @@ public class GymTonificate {
                     final int LIST = 1;
                     final int ADD = 2;
                     final int REMOVE = 3;
+                    final int CONTINUAR = 4;
 
-                    gestion = leerDatosTeclado.leerEntero("Gestión especialidades -> (Listar => 1) (Añadir => 2) (Eliminar => 3)", 1, 3);
 
                     int contador = 1;
 
-                    switch (gestion) {
-                        case LIST -> {
-                            for (String s : listaEspecialidades) {
-                                String numero = "" + contador + ".-";
-                                System.out.println(numero + s);
-                                contador++;
+                    do {
+                        gestion = leerDatosTeclado.leerEntero("Gestión especialidades -> (Listar => 1) (Añadir => 2) (Eliminar => 3) (Continuar => 4)", 1, 4);
+                        switch (gestion) {
+                            case LIST -> {
+                                for (String s : listaEspecialidades) {
+                                    String numero = "" + contador + ".-";
+                                    System.out.println(numero + s);
+                                    contador++;
+                                }
+                            }
+                            case ADD -> {
+                                String add = leerDatosTeclado.leerString("Introduce la nueva especialidad");
+                                boolean continuar = continuar(add, 1);
+                                if (continuar) {
+                                    listaEspecialidades.add(add);
+                                }
+                            }
+                            case REMOVE -> {
+                                eliminarEspecialidades();
                             }
                         }
-                        case ADD -> {
-                            String add = leerDatosTeclado.leerString("Introduce la nueva especialidad");
-                            boolean continuar = continuar(add, 1);
-                            if (continuar) {
-                                listaEspecialidades.add(add);
-                            }
-                        }
-                        case REMOVE -> {
-                            eliminarEspecialidades();
-                        }
-                    }
-
+                    }while(gestion != CONTINUAR);
                 }
                 case GESTIONARTRABAJOS -> {
                     int gestion;
                     final int LIST = 1;
                     final int ADD = 2;
                     final int REMOVE = 3;
-
-                    gestion = leerDatosTeclado.leerEntero("Gestión especialidades -> (Listar => 1) (Añadir => 2) (Eliminar => 3)", 1, 3);
+                    final int CONTINUAR = 4;
 
                     int contador = 1;
 
-                    switch (gestion) {
-                        case LIST -> {
-                            for (String s : listaTrabajos) {
-                                String numero = "" + contador + ".-";
-                                System.out.println(numero + s);
-                                contador++;
+                    do {
+                        gestion = leerDatosTeclado.leerEntero("Gestión especialidades -> (Listar => 1) (Añadir => 2) (Eliminar => 3) (Continuar => 4)", 1, 4);
+                        switch (gestion) {
+                            case LIST -> {
+                                for (String s : listaTrabajos) {
+                                    String numero = "" + contador + ".-";
+                                    System.out.println(numero + s);
+                                    contador++;
+                                }
+                            }
+                            case ADD -> {
+                                String add = leerDatosTeclado.leerString("Introduce el nuevo trabajo");
+                                //Continuar(String add, int accion) => accion = 1 añadir -> 1 borrar -> 2
+                                boolean continuar = continuar(add, 1);
+                                if (continuar) {
+                                    listaTrabajos.add(add);
+                                }
+                            }
+                            case REMOVE -> {
+                                eliminarTrabajos();
                             }
                         }
-                        case ADD -> {
-                            String add = leerDatosTeclado.leerString("Introduce el nuevo trabajo");
-                            //Continuar(String add, int accion) => accion = 1 añadir -> 1 borrar -> 2
-                            boolean continuar = continuar(add, 1);
-                            if (continuar) {
-                                listaTrabajos.add(add);
-                            }
-                        }
-                        case REMOVE -> {
-                            eliminarTrabajos();
-                        }
-                    }
-
+                    }while(gestion != CONTINUAR);
                 }
             }
         } while (decision != SALIR);
+    }
+
+    private static void cargarEspecialidades(ArrayList<String> listaEspecialidades) {
+        listaEspecialidades.add("Aerobic");
+        listaEspecialidades.add("Calistenia");
+        listaEspecialidades.add("Crossfit");
+    }
+
+    private static void cargarTrabajos(ArrayList<String> listaTrabajos) {
+        listaTrabajos.add("Limpiador");
+        listaTrabajos.add("Asistente");
+        listaTrabajos.add("Organizador");
+    }
+
+    private static void cargarPersonas(ArrayList<Persona> personas) {
+        Persona socio1 = new Socio();
+        Persona socio2 = new Socio();
+        Persona socio3 = new Socio();
+
+        Persona monitor1 = new Monitor();
+        Persona monitor2 = new Monitor();
+        Persona monitor3 = new Monitor();
+
+        Persona empleado1 = new Empleado();
+        Persona empleado2 = new Empleado();
+        Persona empleado3 = new Empleado();
+
+        personas.add(socio1);
+        personas.add(socio2);
+        personas.add(socio3);
+        personas.add(monitor1);
+        personas.add(monitor2);
+        personas.add(monitor3);
+        personas.add(empleado1);
+        personas.add(empleado2);
+        personas.add(empleado3);
     }
 
     /**
