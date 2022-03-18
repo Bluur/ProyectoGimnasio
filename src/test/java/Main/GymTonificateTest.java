@@ -39,43 +39,6 @@ public class GymTonificateTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of main method, of class GymTonificate.
-     */
-    @Test
-    public void testMain() {
-        System.out.println("main");
-        String[] args = null;
-        GymTonificate.main(args);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of altaPersona method, of class GymTonificate.
-     */
-    @Test
-    public void testAltaPersona() {
-        System.out.println("altaPersona");
-        int tipo = 0;
-        Persona expResult = null;
-        Persona result = GymTonificate.altaPersona(tipo);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of modificarPersona method, of class GymTonificate.
-     */
-    @Test
-    public void testModificarPersona() {
-        System.out.println("modificarPersona");
-        int posicion = 0;
-        GymTonificate.modificarPersona(posicion);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
 
     /**
      * Test of leerFechaNacimiento method, of class GymTonificate.
@@ -93,49 +56,4 @@ public class GymTonificateTest {
         assertTrue(prueba.get(Calendar.YEAR) == 1999);
     }
 
-    /**
-     * Test of contains method, of class GymTonificate.
-     */
-    @Test
-    public void testContains() {
-        System.out.println("contains");
-        String aBuscar = "";
-        ArrayList<String> lista = null;
-        boolean expResult = false;
-        boolean result = GymTonificate.contains(aBuscar, lista);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of continuar method, of class GymTonificate.
-     */
-    @Test
-    public void testContinuar() {
-
-    }
-
-    /**
-     * Test of eliminarEspecialidades method, of class GymTonificate.
-     */
-    @Test
-    public void testEliminarEspecialidades() {
-        System.out.println("eliminarEspecialidades");
-        GymTonificate.eliminarEspecialidades();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of eliminarTrabajos method, of class GymTonificate.
-     */
-    @Test
-    public void testEliminarTrabajos() {
-        System.out.println("eliminarTrabajos");
-        GymTonificate.eliminarTrabajos();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-    
 }

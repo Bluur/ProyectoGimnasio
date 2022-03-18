@@ -12,7 +12,7 @@ public class Monitor extends Persona {
     public Monitor(String nombre, String DNI, String direccion, String localidad, String provincia, String codigoPostal, String telefono, Calendar fechaAlta, Calendar fechaNacimiento, char sexo, String[] especialidades, float sueldo, boolean activo) {
         super(nombre, DNI, direccion, localidad, provincia, codigoPostal, telefono, fechaAlta, fechaNacimiento, sexo);
 
-        if (sueldo <= 950) {
+        if (sueldo < 950) {
             throw new IllegalArgumentException("El sueldo es inválido");
         }
         
@@ -37,16 +37,16 @@ public class Monitor extends Persona {
 
     public boolean setEspecialidad(String especialidad) {
         boolean continuar = true;
-        boolean añadido = false;
+        boolean added = false;
 
         for (int i = 0; i < this.especialidades.length && continuar; i++) {
             if (this.especialidades[i] == null) {
                 this.especialidades[i] = especialidad;
-                añadido = true;
+                added = true;
                 continuar = false;
             }
         }
-        return añadido;
+        return added;
     }
 
     public float getSueldo() {

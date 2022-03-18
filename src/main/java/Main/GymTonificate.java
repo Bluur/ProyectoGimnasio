@@ -4,7 +4,10 @@ import Clases.Empleado;
 import Clases.Monitor;
 import Clases.Persona;
 import Clases.Socio;
+
+//Para validar el DNI/NIE/NIF
 import Funciones.funcionesValidadoras;
+//Para validar el input del usuario
 import Funciones.leerDatosTeclado;
 
 import java.util.ArrayList;
@@ -13,13 +16,20 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 /**
- * Clase que contiene el MAIN y las funciones que este necesita main => Programa
- * main menu => Menú principal que recoge la elección del usuario tipoPersona =>
- * Lee el tipo de persona validando el input del usuario Modificar persona =>
- * Big ol chunk de código spaghetti que modifica la persona leerFechaNacimiento
- * => Crea un calendar con el input del usuario Contains => Busca en el array de
- * Strings ya sea trabajo o especialidades
- *
+ * Clase que contiene el MAIN y las funciones que este necesita
+ * MAIN => Programa main
+ * CARGARESPECIALIDADES => Se encarga de cargar al principio las especialidades
+ * CARGARTRABAJOS => Se encarga de cargar al principìo los trabajos
+ * CARGARPERSONAS => Se encarga de cargar al principio las personas
+ * MENU => Menú principal que recoge la elección del usuario
+ * TIPOPERSONA => Lee el tipo de persona validando el input del usuario
+ * ALTAPERSONA => Se encarga de registrar a una persona pidiendo todos los datos y validándolos
+ * MODIFICARPERSONA => Big ol chunk de código spaghetti que modifica la persona
+ * LEERFECHANACIMIENTO => Crea un calendar con el input del usuario
+ * CONTAINS => Busca en el array de Strings ya sea trabajo o especialidades
+ * CONTINUAR => Función que confirma una adición o eliminación del algún aspecto del programa
+ * ELIMINARESPECIALIDADES => Función que elimina especialidades
+ * ELIMINARTRABAJOS => Función que elimina trabajos
  * @author Migue
  */
 public class GymTonificate {
@@ -181,7 +191,7 @@ public class GymTonificate {
                                 }
                             }
                             case REMOVE -> {
-                                eliminarEspecialidades();
+                                eliminarEspecialidades(listaEspecialidades);
                             }
                         }
                     }while(gestion != CONTINUAR);
@@ -214,7 +224,7 @@ public class GymTonificate {
                                 }
                             }
                             case REMOVE -> {
-                                eliminarTrabajos();
+                                eliminarTrabajos(listaTrabajos, personas);
                             }
                         }
                     }while(gestion != CONTINUAR);
@@ -223,30 +233,54 @@ public class GymTonificate {
         } while (decision != SALIR);
     }
 
+    /**
+     * Carga especialidades en el programa
+     * @param listaEspecialidades Referencia al array en el que cargarlos
+     */
     private static void cargarEspecialidades(ArrayList<String> listaEspecialidades) {
         listaEspecialidades.add("Aerobic");
         listaEspecialidades.add("Calistenia");
         listaEspecialidades.add("Crossfit");
     }
 
+    /**
+     * Carga trabajos para comenzar el programa
+     * @param listaTrabajos Referencia al array en el que cargarlos
+     */
     private static void cargarTrabajos(ArrayList<String> listaTrabajos) {
         listaTrabajos.add("Limpiador");
         listaTrabajos.add("Asistente");
         listaTrabajos.add("Organizador");
     }
 
+    /**
+     * Carga personas para comenzar el programa
+     * @param personas Referencia al array en el que cargarlos
+     */
     private static void cargarPersonas(ArrayList<Persona> personas) {
-        Persona socio1 = new Socio();
-        Persona socio2 = new Socio();
-        Persona socio3 = new Socio();
+        Calendar fechaAlta = new GregorianCalendar();
+        Calendar fechaNac1 = new GregorianCalendar(1999, Calendar.AUGUST, 17);
+        Calendar fechaNac2 = new GregorianCalendar(2003, Calendar.AUGUST, 5);
+        Calendar fechaNac3 = new GregorianCalendar(1980, Calendar.AUGUST, 25);
+        Calendar fechaNac4 = new GregorianCalendar(1961, Calendar.JANUARY, 11);
 
-        Persona monitor1 = new Monitor();
-        Persona monitor2 = new Monitor();
-        Persona monitor3 = new Monitor();
+        String[] especialidades;
 
-        Persona empleado1 = new Empleado();
-        Persona empleado2 = new Empleado();
-        Persona empleado3 = new Empleado();
+
+        Persona socio1 = new Socio("Miguel", "77446461X", "Almuñecar 10", "Granada", "Granada", "18006", "604101255", fechaAlta, fechaNac1, 'H', 2, true, "Dierna");
+        Persona socio2 = new Socio("Pepe", "S5690421B", "Avenida América 5","Granada", "Granada", "18006", "958088882", fechaAlta, fechaNac2, 'H', 4, false, "");
+        Persona socio3 = new Socio("Yolanda", "42616015M", "Almendros 2", "Alhendín", "Granada", "18200", "680325775", fechaAlta, fechaNac3, 'M', 3, true, "Artrosis");
+
+        especialidades = new String[]{"Crossfit"};
+        Persona monitor1 = new Monitor("Roberto", "Z4425015G", "Doctor marañón", "Armilla", "Granada", "18100", "611352928", fechaAlta, fechaNac1, 'H', especialidades, 950, true);
+        especialidades = new String[]{"Calistenia"};
+        Persona monitor2 = new Monitor("Eva", "05939959W", "Habana 3", "Churriana de la Vega", "Granada", "18799", "858292835", fechaAlta, fechaNac2, 'M', especialidades, 980, false);
+        especialidades = new String[]{"Aerobic", "Calistenia"};
+        Persona monitor3 = new Monitor("Ana María", "Z4425015G", "Tuerce Espina 3", "Tuerce Espina", "Reinos del Este", "11111", "918238989", fechaAlta, fechaNac3, 'M', especialidades, 1500, true);
+
+        Persona empleado1 = new Empleado("Alberto", "81699080K", "Alhama 3", "Alhama de Granada", "Granada", "18002", "958945139", fechaAlta, fechaNac1, 'H', "Limpiador", 1200, "+23");
+        Persona empleado2 = new Empleado("María", "Y3753738Z", "Orgrimmar 3", "Orgrimmar", "Durotar", "66666", "626364657", fechaAlta, fechaNac3, 'M', "Organizador", 1600, "+66");
+        Persona empleado3 = new Empleado("Diana", "U57812752", "Casa de la Dios 1", "Temiscira", "Mar mediterránero", "11111", "989324565", fechaAlta, fechaNac4, 'M', "Asistente", 2000, "+11");
 
         personas.add(socio1);
         personas.add(socio2);
@@ -544,7 +578,7 @@ public class GymTonificate {
                 socio.setSesionesSemanales(sesiones);
             }
             //Pagado
-            if (socio.isPagado()) {
+            if (!socio.isPagado()) {
                 eleccion = leerDatosTeclado.leerString("¿No ha pagado sus cuotas, desea pagarlas? (S/N)");
                 if (!eleccion.isEmpty() && eleccion.charAt(0) == 'S') {
                     socio.setPagado(true);
@@ -651,7 +685,7 @@ public class GymTonificate {
      * Saca por pantalla una a una las especialidades presentes en el programa
      * En caso de introducir un caracter se borrará en caso contrario no.
      */
-    public static void eliminarEspecialidades() {
+    private static void eliminarEspecialidades(ArrayList<String> listaEspecialidades) {
         //Array list en el que guardamos las posiciones de las strings que queremos eliminar
         ArrayList<Integer> aEliminar = new ArrayList<>();
 
@@ -690,9 +724,10 @@ public class GymTonificate {
      * Saca por pantalla una a una los trabajos presentes en el programa En caso
      * de introducir un caracter se borrará en caso contrario no.
      */
-    public static void eliminarTrabajos() {
+    public static void eliminarTrabajos(ArrayList<String> listaTrabajos, ArrayList<Persona>personas) {
         //Array list en el que guardamos las posiciones de las strings que queremos eliminar
-        ArrayList<Integer> aEliminar = new ArrayList<>();
+        //Esto lo hago porque no se pueden eliminar elementos de un array mientras lo recorres
+        ArrayList<Integer> posEliminar = new ArrayList<>();
 
         //Recorremos el array de especialidades una por una, guardando su posicion en cada iteración
         for (String trabajo : listaTrabajos) {
@@ -707,7 +742,7 @@ public class GymTonificate {
              */
             if (!eleccion.isEmpty()) {
                 if (continuar(trabajo, 0)) {
-                    aEliminar.add(posicion);
+                    posEliminar.add(posicion);
                 }
             }
         }
@@ -719,7 +754,7 @@ public class GymTonificate {
         int modificador = 0;
 
         //Se elimina el indice guardado en el array de posiciones
-        for (int s : aEliminar) {
+        for (int s : posEliminar) {
             listaTrabajos.remove(s - modificador);
             modificador++;
         }

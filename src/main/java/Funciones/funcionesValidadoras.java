@@ -54,7 +54,7 @@ public class funcionesValidadoras {
      * @param nif NIF/NIE de entrada
      * @return boolean
      */
-    public static boolean validarNif(String nif){
+    private static boolean validarNif(String nif){
         Pattern dni = Pattern.compile("([XYZ]?)([0-9]{1,9})([A-Za-z])");
         Matcher d = dni.matcher(nif);
 
@@ -76,7 +76,7 @@ public class funcionesValidadoras {
      * @param cif CIF a validar
      * @return boolean
      */
-    public static boolean validarCif(String cif){
+    private static boolean validarCif(String cif){
         //Variables
         String caracteres = "ABCDEFGHIJ";
         int sumaPares = 0;
