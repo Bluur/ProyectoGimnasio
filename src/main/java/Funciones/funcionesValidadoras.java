@@ -3,7 +3,7 @@ package Funciones;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class funcionesValidadoras {
+public class FuncionesValidadoras {
     
     /**
      * Separa los NIF/NIE de los CIF, el NIE lo pasa como un DNI pero cambiandole

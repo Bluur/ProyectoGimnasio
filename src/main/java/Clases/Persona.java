@@ -1,13 +1,14 @@
 
 package Clases;
 
-import Funciones.funcionesValidadoras;
+import Funciones.FuncionesValidadoras;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Objects;
 
 
-public abstract class Persona implements Comparable<Persona> {
+public abstract class Persona implements Comparable<Persona>, Serializable {
     private String nombre;
     private String DNI;
     private String direccion;
@@ -34,7 +35,7 @@ public abstract class Persona implements Comparable<Persona> {
      */
     public Persona(String nombre, String DNI, String direccion, String localidad, String provincia, String codigoPostal, String telefono, Calendar fechaAlta, Calendar fechaNacimiento, char sexo){
         
-        if(!funcionesValidadoras.validarId(DNI)){
+        if(!FuncionesValidadoras.validarId(DNI)){
             throw new IllegalArgumentException("El DNI no es válido");
         }
 
@@ -81,7 +82,7 @@ public abstract class Persona implements Comparable<Persona> {
     }
 
     public void setDNI(String DNI) {
-        if(!funcionesValidadoras.validarId(DNI)){
+        if(!FuncionesValidadoras.validarId(DNI)){
             throw new IllegalArgumentException("El DNI no es válido");
         }
         this.DNI = DNI;

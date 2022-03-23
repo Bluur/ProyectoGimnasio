@@ -1,6 +1,8 @@
-Clases\Persona.class
+Funciones\LeerDatosTeclado.class
 Main\GymTonificate.class
-Clases\Empleado.class
 Clases\Monitor.class
+Funciones\funcionesLecturaEscritura.class
+Funciones\FuncionesValidadoras.class
+Clases\Persona.class
+Clases\Empleado.class
 Clases\Socio.class
-Main\leerDatosTeclado.class

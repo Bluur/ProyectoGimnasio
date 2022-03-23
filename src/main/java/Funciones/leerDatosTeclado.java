@@ -2,7 +2,7 @@ package Funciones;
 
 import java.util.Scanner;
 
-public class leerDatosTeclado {
+public class LeerDatosTeclado {
 
     public static int leerEntero(String mensaje) {
         int numero;

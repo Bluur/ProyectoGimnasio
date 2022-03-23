@@ -6,9 +6,9 @@ import Clases.Persona;
 import Clases.Socio;
 
 //Para validar el DNI/NIE/NIF
-import Funciones.funcionesValidadoras;
+import Funciones.FuncionesValidadoras;
 //Para validar el input del usuario
-import Funciones.leerDatosTeclado;
+import Funciones.LeerDatosTeclado;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,6 +37,7 @@ public class GymTonificate {
     private static ArrayList<Persona> personas;
     private static ArrayList<String> listaEspecialidades;
     private static ArrayList<String> listaTrabajos;
+    private static final String DATOSPERSONAS =  "datosPersonas.dat";
 
     public static void main(String[] args) {
         final int ALTA = 1;
@@ -50,6 +51,9 @@ public class GymTonificate {
 
         //Inicializar estructuras de datos
         personas = new ArrayList<>();
+        personas = Funciones.funcionesLecturaEscritura.leerDatos(DATOSPERSONAS);
+        System.out.println("Personas Cargadas");
+        
         listaEspecialidades = new ArrayList<>();
         listaTrabajos = new ArrayList<>();
 
@@ -82,7 +86,7 @@ public class GymTonificate {
                     }
                 }
                 case BAJA -> {
-                    String documento = leerDatosTeclado.leerString("Deme su ID para borrar su cuenta (NIF,NIE,CIF)");
+                    String documento = LeerDatosTeclado.leerString("Deme su ID para borrar su cuenta (NIF,NIE,CIF)");
                     for(Persona c:personas){
                         if(c != null && c.getDNI().equals(documento)){
                             personas.remove(c);
@@ -96,14 +100,14 @@ public class GymTonificate {
                     }
                 }
                 case MODIFICAR -> {
-                    String documento = leerDatosTeclado.leerString("Deme su ID para modificar su cuenta (NIF,NIE,CIF)");
+                    String documento = LeerDatosTeclado.leerString("Deme su ID para modificar su cuenta (NIF,NIE,CIF)");
                     int posicion = 0;
                     boolean modificar = false;
 
                     //Verifica si esta vacio el array personas
                     if (!personas.isEmpty()) {
                         //Verifica validez del documento
-                        if (funcionesValidadoras.validarId(documento)) {
+                        if (FuncionesValidadoras.validarId(documento)) {
                             //Busca el documento
                             for (Persona c : personas) {
                                 //Comprueba que no sea nulo para no tener un pointer exception y compara
@@ -174,7 +178,7 @@ public class GymTonificate {
                     int contador = 1;
 
                     do {
-                        gestion = leerDatosTeclado.leerEntero("Gestión especialidades -> (Listar => 1) (Añadir => 2) (Eliminar => 3) (Continuar => 4)", 1, 4);
+                        gestion = LeerDatosTeclado.leerEntero("Gestión especialidades -> (Listar => 1) (Añadir => 2) (Eliminar => 3) (Continuar => 4)", 1, 4);
                         switch (gestion) {
                             case LIST -> {
                                 for (String s : listaEspecialidades) {
@@ -184,7 +188,7 @@ public class GymTonificate {
                                 }
                             }
                             case ADD -> {
-                                String add = leerDatosTeclado.leerString("Introduce la nueva especialidad");
+                                String add = LeerDatosTeclado.leerString("Introduce la nueva especialidad");
                                 boolean continuar = continuar(add, 1);
                                 if (continuar) {
                                     listaEspecialidades.add(add);
@@ -206,7 +210,7 @@ public class GymTonificate {
                     int contador = 1;
 
                     do {
-                        gestion = leerDatosTeclado.leerEntero("Gestión especialidades -> (Listar => 1) (Añadir => 2) (Eliminar => 3) (Continuar => 4)", 1, 4);
+                        gestion = LeerDatosTeclado.leerEntero("Gestión especialidades -> (Listar => 1) (Añadir => 2) (Eliminar => 3) (Continuar => 4)", 1, 4);
                         switch (gestion) {
                             case LIST -> {
                                 for (String s : listaTrabajos) {
@@ -216,7 +220,7 @@ public class GymTonificate {
                                 }
                             }
                             case ADD -> {
-                                String add = leerDatosTeclado.leerString("Introduce el nuevo trabajo");
+                                String add = LeerDatosTeclado.leerString("Introduce el nuevo trabajo");
                                 //Continuar(String add, int accion) => accion = 1 añadir -> 1 borrar -> 2
                                 boolean continuar = continuar(add, 1);
                                 if (continuar) {
@@ -229,8 +233,10 @@ public class GymTonificate {
                         }
                     }while(gestion != CONTINUAR);
                 }
+
             }
         } while (decision != SALIR);
+        Funciones.funcionesLecturaEscritura.guardarDatos(personas, DATOSPERSONAS);
     }
 
     /**
@@ -323,7 +329,7 @@ public class GymTonificate {
             }
         }
 
-        eleccion = leerDatosTeclado.leerEntero("¿Qué desea hacer?", 1, 8);
+        eleccion = LeerDatosTeclado.leerEntero("¿Qué desea hacer?", 1, 8);
 
         return eleccion;
     }
@@ -336,7 +342,7 @@ public class GymTonificate {
     private static int tipoPersona() {
         int decision;
         do {
-            decision = leerDatosTeclado.leerEntero("Tipo persona -> (Socio => 1) (Monitor => 2) (Empleado => 3)", 1, 3);
+            decision = LeerDatosTeclado.leerEntero("Tipo persona -> (Socio => 1) (Monitor => 2) (Empleado => 3)", 1, 3);
         } while (decision != 1 && decision != 2 && decision != 3);
         return decision;
     }
@@ -359,40 +365,40 @@ public class GymTonificate {
         }
 
         //Variables
-        String nombre = leerDatosTeclado.leerString("Dame tu nombre");
+        String nombre = LeerDatosTeclado.leerString("Dame tu nombre");
 
         String DNI;
         do {
-            DNI = leerDatosTeclado.leerString("Dame tu DNI");
-        } while (!funcionesValidadoras.validarId(DNI));
+            DNI = LeerDatosTeclado.leerString("Dame tu DNI");
+        } while (!FuncionesValidadoras.validarId(DNI));
 
-        String direccion = leerDatosTeclado.leerString("Dame tu dirección");
-        String localidad = leerDatosTeclado.leerString("Dame tu localidad");
-        String provincia = leerDatosTeclado.leerString("Dame tu provincia");
+        String direccion = LeerDatosTeclado.leerString("Dame tu dirección");
+        String localidad = LeerDatosTeclado.leerString("Dame tu localidad");
+        String provincia = LeerDatosTeclado.leerString("Dame tu provincia");
 
         String codigoPostal;
         do {
-            codigoPostal = leerDatosTeclado.leerString("Dame tu codigoPostal");
+            codigoPostal = LeerDatosTeclado.leerString("Dame tu codigoPostal");
         } while (codigoPostal.length() != 5);
 
         String telefono;
         do {
-            telefono = leerDatosTeclado.leerString("Dame tu teléfono");
+            telefono = LeerDatosTeclado.leerString("Dame tu teléfono");
         } while (telefono.length() != 9);
 
         Calendar fechaAlta = new GregorianCalendar();
         Calendar fechaNacimiento = leerFechaNacimiento(fechaAlta);
-        char sexo = leerDatosTeclado.leerChar("Dame tu sexo H/M", 'H', 'M');
+        char sexo = LeerDatosTeclado.leerChar("Dame tu sexo H/M", 'H', 'M');
         Persona nueva;
 
         switch (tipo) {
             case SOCIO -> {
                 //Sesiones
-                int sesiones = leerDatosTeclado.leerEntero("Dame tu numero de sesiones", 2, 6);
+                int sesiones = LeerDatosTeclado.leerEntero("Dame tu numero de sesiones", 2, 6);
                 //Pagado
-                boolean pagado = leerDatosTeclado.leerEntero("Introduzca 1 si está pagado o 0 sino", 0, 1) == 0;
+                boolean pagado = LeerDatosTeclado.leerEntero("Introduzca 1 si está pagado o 0 sino", 0, 1) == 0;
                 //Lesiones
-                String lesiones = leerDatosTeclado.leerString("Introduzca las lesiones que tenga");
+                String lesiones = LeerDatosTeclado.leerString("Introduzca las lesiones que tenga");
                 nueva = new Socio(nombre, DNI, direccion, localidad, provincia, codigoPostal, telefono, fechaAlta, fechaNacimiento, sexo, sesiones, pagado, lesiones);
             }
             case MONITOR -> {
@@ -403,7 +409,7 @@ public class GymTonificate {
                 
                 //Comprobar la especialidad
                 do {
-                    especialidad = leerDatosTeclado.leerString("Deme sus especialidades, introduzca enter para parar (Max 3)");
+                    especialidad = LeerDatosTeclado.leerString("Deme sus especialidades, introduzca enter para parar (Max 3)");
 
                     //Si la lista contiene la especialidad introducida recorre el array
                     if (listaEspecialidades.contains(especialidad) && !especialidades.contains(especialidad)) {
@@ -423,11 +429,11 @@ public class GymTonificate {
                 }
 
                 //Sueldo
-                float sueldo = leerDatosTeclado.leerFloat("Deme el sueldo", 950);
+                float sueldo = LeerDatosTeclado.leerFloat("Deme el sueldo", 950);
 
                 //Activo
                 boolean activo;
-                char decision = leerDatosTeclado.leerChar("¿Está activo? (S/N)");
+                char decision = LeerDatosTeclado.leerChar("¿Está activo? (S/N)");
                 activo = decision != 'N';
 
                 nueva = new Monitor(nombre, DNI, direccion, localidad, provincia, codigoPostal, telefono, fechaAlta, fechaNacimiento, sexo, array, sueldo, activo);
@@ -440,14 +446,14 @@ public class GymTonificate {
                 //Tipo de trabajo
                 do {
                     System.out.println("Estos son los trabajos disponibles : \n" + listaTrabajos.toString());
-                    tipoTrabajo = leerDatosTeclado.leerString("Deme su tipo de trabajo");
+                    tipoTrabajo = LeerDatosTeclado.leerString("Deme su tipo de trabajo");
                 } while (!contains(tipoTrabajo, listaTrabajos));
 
                 //Sueldo
-                sueldo = leerDatosTeclado.leerFloat("Deme su sueldo", 950);
+                sueldo = LeerDatosTeclado.leerFloat("Deme su sueldo", 950);
 
                 //extension
-                extension = leerDatosTeclado.leerString("Indique la extensión telefónica");
+                extension = LeerDatosTeclado.leerString("Indique la extensión telefónica");
 
                 nueva = new Empleado(nombre, DNI, direccion, localidad, provincia, codigoPostal, telefono, fechaAlta, fechaNacimiento, sexo, tipoTrabajo, sueldo, extension);
             }
@@ -471,20 +477,20 @@ public class GymTonificate {
         
         //Nombre
         System.out.println("Nombre => " + aEditar.getNombre());
-        String eleccion = leerDatosTeclado.leerString("Introduzca un nombre si desea cambiarlo, sino pulse enter: ");
+        String eleccion = LeerDatosTeclado.leerString("Introduzca un nombre si desea cambiarlo, sino pulse enter: ");
         if (!eleccion.isEmpty()) {
             aEditar.setNombre(eleccion);
         }
 
         //DNI
         System.out.println("DNI => " + aEditar.getDNI());
-        eleccion = leerDatosTeclado.leerString("Introduzca un DNI si desea cambiarlo, sino, pulse enter");
+        eleccion = LeerDatosTeclado.leerString("Introduzca un DNI si desea cambiarlo, sino, pulse enter");
         while (!eleccion.isEmpty() && !continuar) {
-            if (funcionesValidadoras.validarId(eleccion)) {
+            if (FuncionesValidadoras.validarId(eleccion)) {
                 aEditar.setDNI(eleccion);
                 continuar = true;
             } else {
-                eleccion = leerDatosTeclado.leerString("Introduzcalo de nuevo o pulse enter");
+                eleccion = LeerDatosTeclado.leerString("Introduzcalo de nuevo o pulse enter");
                 if (eleccion.isEmpty()) {
                     continuar = true;
                 }
@@ -493,35 +499,35 @@ public class GymTonificate {
 
         //Dirección
         System.out.println("Dirección => " + aEditar.getDireccion());
-        eleccion = leerDatosTeclado.leerString("Introduzca una dirección si desea cambiarla, sino, pulse enter");
+        eleccion = LeerDatosTeclado.leerString("Introduzca una dirección si desea cambiarla, sino, pulse enter");
         if (!eleccion.isEmpty()) {
             aEditar.setDireccion(eleccion);
         }
 
         //Localidad
         System.out.println("Localidad => " + aEditar.getLocalidad());
-        eleccion = leerDatosTeclado.leerString("Introduzca una localidad si desea cambiarla, sino, pulse enter");
+        eleccion = LeerDatosTeclado.leerString("Introduzca una localidad si desea cambiarla, sino, pulse enter");
         if (!eleccion.isEmpty()) {
             aEditar.setLocalidad(eleccion);
         }
 
         //Provincia
         System.out.println("Provincia => " + aEditar.getProvincia());
-        eleccion = leerDatosTeclado.leerString("Introduzca una provincia si desea cambiarla, sino, pulse enter");
+        eleccion = LeerDatosTeclado.leerString("Introduzca una provincia si desea cambiarla, sino, pulse enter");
         if (!eleccion.isEmpty()) {
             aEditar.setProvincia(eleccion);
         }
 
         //Codigo Postal
         System.out.println("Código postal => " + aEditar.getCodigoPostal());
-        eleccion = leerDatosTeclado.leerString("Introduzca un código postal si desea cambiarlo, sino, pulse enter");
+        eleccion = LeerDatosTeclado.leerString("Introduzca un código postal si desea cambiarlo, sino, pulse enter");
         continuar = false;
         while (!eleccion.isEmpty() && !continuar) {
             if (eleccion.length() == 5) {
                 aEditar.setCodigoPostal(eleccion);
                 continuar = true;
             } else {
-                eleccion = leerDatosTeclado.leerString("Introduzcalo de nuevo o pulse enter");
+                eleccion = LeerDatosTeclado.leerString("Introduzcalo de nuevo o pulse enter");
                 if (eleccion.isEmpty()) {
                     continuar = true;
                 }
@@ -530,14 +536,14 @@ public class GymTonificate {
 
         //Teléfono
         System.out.println("Teléfono => " + aEditar.getTelefono());
-        eleccion = leerDatosTeclado.leerString("Introduzca un teléfono si desea cambiarlo, sino, pulse enter");
+        eleccion = LeerDatosTeclado.leerString("Introduzca un teléfono si desea cambiarlo, sino, pulse enter");
         continuar = false;
         while (!eleccion.isEmpty() && !continuar) {
             if (eleccion.length() == 9) {
                 aEditar.setTelefono(eleccion);
                 continuar = true;
             } else {
-                eleccion = leerDatosTeclado.leerString("Introduzcalo de nuevo o pulse enter");
+                eleccion = LeerDatosTeclado.leerString("Introduzcalo de nuevo o pulse enter");
                 if (eleccion.isEmpty()) {
                     continuar = true;
                 }
@@ -546,13 +552,13 @@ public class GymTonificate {
 
         //Fecha Nacimiento
         System.out.println("Fecha nacimiento => " + aEditar.fechaNacToString());
-        eleccion = leerDatosTeclado.leerString("¿Desea cambiar la fecha? Enter para continuar sin cambios");
+        eleccion = LeerDatosTeclado.leerString("¿Desea cambiar la fecha? Enter para continuar sin cambios");
         if (!eleccion.isEmpty()) {
-            int dia = leerDatosTeclado.leerEntero("Dia de nacimiento", 1, 31);
-            int mes = leerDatosTeclado.leerEntero("Mes de nacimiento", 1, 12);
+            int dia = LeerDatosTeclado.leerEntero("Dia de nacimiento", 1, 31);
+            int mes = LeerDatosTeclado.leerEntero("Mes de nacimiento", 1, 12);
             int year;
             do {
-                year = leerDatosTeclado.leerEntero("Deme su año de nacimiento");
+                year = LeerDatosTeclado.leerEntero("Deme su año de nacimiento");
             } while (Calendar.YEAR - year > 99);
             Calendar fechaNueva = new GregorianCalendar(year, mes, dia);
             aEditar.setFechaNacimiento(fechaNueva);
@@ -560,7 +566,7 @@ public class GymTonificate {
 
         //Sexo
         System.out.println("Sexo => " + aEditar.getSexo());
-        eleccion = leerDatosTeclado.leerString("Introduzca H/M si desea cambiarlo, sino, pulse enter");
+        eleccion = LeerDatosTeclado.leerString("Introduzca H/M si desea cambiarlo, sino, pulse enter");
         if (!eleccion.isEmpty() && eleccion.charAt(0) == 'H') {
             aEditar.setSexo('H');
         } else if (!eleccion.isEmpty() && eleccion.charAt(0) == 'M') {
@@ -572,20 +578,20 @@ public class GymTonificate {
             Socio socio = (Socio) personas.get(posicion);
             //Sesiones
             System.out.println("Sesiones =>" + socio.getSesionesSemanales());
-            eleccion = leerDatosTeclado.leerString("Pulse enter para continuar o cualquier caracter para cambiarlas");
+            eleccion = LeerDatosTeclado.leerString("Pulse enter para continuar o cualquier caracter para cambiarlas");
             if (!eleccion.isEmpty()) {
-                int sesiones = leerDatosTeclado.leerEntero("Introduzca las sesiones que desea: ", 2, 6);
+                int sesiones = LeerDatosTeclado.leerEntero("Introduzca las sesiones que desea: ", 2, 6);
                 socio.setSesionesSemanales(sesiones);
             }
             //Pagado
             if (!socio.isPagado()) {
-                eleccion = leerDatosTeclado.leerString("¿No ha pagado sus cuotas, desea pagarlas? (S/N)");
+                eleccion = LeerDatosTeclado.leerString("¿No ha pagado sus cuotas, desea pagarlas? (S/N)");
                 if (!eleccion.isEmpty() && eleccion.charAt(0) == 'S') {
                     socio.setPagado(true);
                 }
             }
             //Lesiones
-            eleccion = leerDatosTeclado.leerString("Introduzca nuevas lesiones si las tiene, sino, pulse enter");
+            eleccion = LeerDatosTeclado.leerString("Introduzca nuevas lesiones si las tiene, sino, pulse enter");
             if (!eleccion.isEmpty()) {
                 socio.setLesiones(eleccion);
             }
@@ -593,10 +599,10 @@ public class GymTonificate {
             Monitor monitor = (Monitor) personas.get(posicion);
             //Sueldo
             System.out.println("Sueldo => " + Arrays.toString(monitor.getEspecialidad()));
-            eleccion = leerDatosTeclado.leerString("Desea cambiar el sueldo de " + monitor.getNombre() + "?"
+            eleccion = LeerDatosTeclado.leerString("Desea cambiar el sueldo de " + monitor.getNombre() + "?"
                     + "Pulse enter para continuar sin cambios, cualquier letra para cambiarlo");
             if (!eleccion.isEmpty()) {
-                float sueldo = leerDatosTeclado.leerFloat("Introduzca el sueldo nuevo", 950);
+                float sueldo = LeerDatosTeclado.leerFloat("Introduzca el sueldo nuevo", 950);
                 monitor.setSueldo(sueldo);
             }
             
@@ -604,7 +610,7 @@ public class GymTonificate {
             
             //Activo
             System.out.println("Activo => " + monitor.isActivo());
-            eleccion = leerDatosTeclado.leerString("¿Quiere cambiar su estado actual?"
+            eleccion = LeerDatosTeclado.leerString("¿Quiere cambiar su estado actual?"
                     + "Pulse enter para continuar o introduzca cualquier carácter para cambiarlo");
             if (!eleccion.isEmpty()) {
                 monitor.setActivo(!monitor.isActivo());
@@ -622,11 +628,11 @@ public class GymTonificate {
      * @return Calendar con la fecha de nacimiento del usuario
      */
     public static Calendar leerFechaNacimiento(Calendar fechaAlta) {
-        int dia = leerDatosTeclado.leerEntero("Dame tu día de nacimiento", 1, 31);
-        int mes = (leerDatosTeclado.leerEntero("Dame tu mes de nacimiento", 1, 12)) - 1;
+        int dia = LeerDatosTeclado.leerEntero("Dame tu día de nacimiento", 1, 31);
+        int mes = (LeerDatosTeclado.leerEntero("Dame tu mes de nacimiento", 1, 12)) - 1;
         int year;
         do {
-            year = leerDatosTeclado.leerEntero("Dame tu año de nacimiento");
+            year = LeerDatosTeclado.leerEntero("Dame tu año de nacimiento");
         } while (Calendar.YEAR - year > 99);
 
         return new GregorianCalendar(year, mes, dia);
@@ -675,7 +681,7 @@ public class GymTonificate {
             System.out.println("Vas a quitar => " + contenido + " ¿estas seguro?");
         }
 
-        int decision = leerDatosTeclado.leerEntero("Introduce 1 para si, 0 para no", 0, 1);
+        int decision = LeerDatosTeclado.leerEntero("Introduce 1 para si, 0 para no", 0, 1);
 
         continuar = decision == SI;
         return continuar;
@@ -694,7 +700,7 @@ public class GymTonificate {
             int posicion = listaEspecialidades.indexOf(esp);
 
             //Se pregunta si se quiere borrar, si se introduce enter pasa al siguiente
-            String eleccion = leerDatosTeclado.leerString("Si quiere eliminar " + esp + " introduzca cualquier carácter");
+            String eleccion = LeerDatosTeclado.leerString("Si quiere eliminar " + esp + " introduzca cualquier carácter");
 
             /*
             Si se ha introducido algo, se llama a la funcion continuar, que confirma si se desea eleminar, y se añade
@@ -734,7 +740,7 @@ public class GymTonificate {
             int posicion = listaTrabajos.indexOf(trabajo);
 
             //Se pregunta si se quiere borrar, si se introduce enter pasa al siguiente
-            String eleccion = leerDatosTeclado.leerString("Si quiere eliminar " + trabajo + " introduzca cualquier carácter");
+            String eleccion = LeerDatosTeclado.leerString("Si quiere eliminar " + trabajo + " introduzca cualquier carácter");
 
             /*
             Si se ha introducido algo, se llama a la funcion continuar, que confirma si se desea eliminar, y se añade
