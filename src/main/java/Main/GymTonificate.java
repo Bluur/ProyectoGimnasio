@@ -49,17 +49,23 @@ public class GymTonificate {
         final int GESTIONARTRABAJOS = 7;
         final int SALIR = 8;
 
-        //Inicializar estructuras de datos
-        personas = new ArrayList<>();
+        //Ejecuta la función que carga datos de un archivo
         personas = Funciones.funcionesLecturaEscritura.leerDatos(DATOSPERSONAS);
-        System.out.println("Personas Cargadas");
-        
+
+        //En caso de no haber datos crea un array vacio y carga unos datos por defecto
+        if(personas == null){
+            personas = new ArrayList<>();
+            System.out.println("No se han podido cargar los datos");
+            cargarPersonas(personas);
+        }else{
+            System.out.println("Personas Cargadas");
+        }
+
         listaEspecialidades = new ArrayList<>();
         listaTrabajos = new ArrayList<>();
 
         cargarEspecialidades(listaEspecialidades);
         cargarTrabajos(listaTrabajos);
-        cargarPersonas(personas);
 
         //Mensaje de bienvenida
         System.out.println("Bienvenido a la Aplicación GymTonificate");
