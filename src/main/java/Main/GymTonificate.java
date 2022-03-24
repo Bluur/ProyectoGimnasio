@@ -7,6 +7,7 @@ import Clases.Socio;
 
 //Para validar el DNI/NIE/NIF
 import Funciones.FuncionesValidadoras;
+import Funciones.funcionesLecturaEscritura;
 //Para validar el input del usuario
 import Funciones.LeerDatosTeclado;
 
@@ -38,6 +39,8 @@ public class GymTonificate {
     private static ArrayList<String> listaEspecialidades;
     private static ArrayList<String> listaTrabajos;
     private static final String DATOSPERSONAS =  "datosPersonas.dat";
+    private static final String DATOSESPECIALIDADES = "datosEspecialidades.dat";
+    private static final String DATOSTRABAJOS = "datosTrabajos.dat";
 
     public static void main(String[] args) {
         final int ALTA = 1;
@@ -49,10 +52,12 @@ public class GymTonificate {
         final int GESTIONARTRABAJOS = 7;
         final int SALIR = 8;
 
-        //Ejecuta la función que carga datos de un archivo
-        personas = Funciones.funcionesLecturaEscritura.leerDatos(DATOSPERSONAS);
-
-        //En caso de no haber datos crea un array vacio y carga unos datos por defecto
+        /*
+        ----PERSONAS----
+        Ejecuta la función para cargar datos de un archivo
+        En caso negativo crea un ArrayList vacio e introduce datos de otra función
+        */
+        personas = Funciones.funcionesLecturaEscritura.leerDatosArrayList(DATOSPERSONAS);
         if(personas == null){
             personas = new ArrayList<>();
             System.out.println("No se han podido cargar los datos");
@@ -60,13 +65,31 @@ public class GymTonificate {
         }else{
             System.out.println("Personas Cargadas");
         }
+        
+        /*
+        ----ESPECIALIDADES---
+        Ejecuta la función para cargar datos de un archivo
+        En caso negativo crea un ArrayList vacio e introduce datos de otra función
+        */
+        listaEspecialidades = funcionesLecturaEscritura.leerDatosArrayString(DATOSESPECIALIDADES);
+        if(listaEspecialidades == null){
+            listaEspecialidades = new ArrayList<>();
+            System.out.println("No se han podido cargar los datos");
+            cargarEspecialidades(listaEspecialidades);
+        }
 
-        listaEspecialidades = new ArrayList<>();
-        listaTrabajos = new ArrayList<>();
-
-        cargarEspecialidades(listaEspecialidades);
-        cargarTrabajos(listaTrabajos);
-
+        /*
+        ----TRABAJOS-----
+        Ejecuta la función para cargar datos de un archivo
+        En caso negativo crea un ArrayList vacio e introduce datos de otra función
+        */
+        listaTrabajos = funcionesLecturaEscritura.leerDatosArrayString(DATOSTRABAJOS);
+        if(listaTrabajos == null){
+            listaTrabajos = new ArrayList<>();
+            System.out.println("No se han podido cargar los datos");
+            cargarTrabajos(listaTrabajos);
+        }
+        
         //Mensaje de bienvenida
         System.out.println("Bienvenido a la Aplicación GymTonificate");
         System.out.println("A continuación le dejamos un menú con las opciones de gestión");
@@ -180,10 +203,8 @@ public class GymTonificate {
                     final int REMOVE = 3;
                     final int CONTINUAR = 4;
 
-
-                    int contador = 1;
-
                     do {
+                        int contador = 1;
                         gestion = LeerDatosTeclado.leerEntero("Gestión especialidades -> (Listar => 1) (Añadir => 2) (Eliminar => 3) (Continuar => 4)", 1, 4);
                         switch (gestion) {
                             case LIST -> {
@@ -212,10 +233,9 @@ public class GymTonificate {
                     final int ADD = 2;
                     final int REMOVE = 3;
                     final int CONTINUAR = 4;
-
-                    int contador = 1;
-
+                    
                     do {
+                        int contador = 1;
                         gestion = LeerDatosTeclado.leerEntero("Gestión especialidades -> (Listar => 1) (Añadir => 2) (Eliminar => 3) (Continuar => 4)", 1, 4);
                         switch (gestion) {
                             case LIST -> {
@@ -242,7 +262,10 @@ public class GymTonificate {
 
             }
         } while (decision != SALIR);
-        Funciones.funcionesLecturaEscritura.guardarDatos(personas, DATOSPERSONAS);
+        //Guardamos los datos
+        funcionesLecturaEscritura.guardarDatosArrayList(personas, DATOSPERSONAS);
+        funcionesLecturaEscritura.guardarDatosArrayString(listaEspecialidades, DATOSESPECIALIDADES);
+        funcionesLecturaEscritura.guardarDatosArrayString(listaTrabajos, DATOSTRABAJOS);
     }
 
     /**
